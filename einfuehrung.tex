@@ -1,0 +1,41 @@
+\section{Lernziel E: Die Grundlagen von Datenbank-Systemen definieren}
+
+\subsection{Die Grundbegriffe von Datenbank-Systemen erklären:}
+
+\subsubsection{Datenbasis}
+
+Als Datenbasis werden die gespeicherten Daten bezeichnet. Die Datenbasis enthält die miteinander in Beziehung stehenden Informationseinheiten.
+
+\subsubsection{Zugriffsprogramme} 
+
+Zugriffsprogramme werden entwickelt um den Benutzer einen einfachen Zugriff auf die Datenbasis zu ermöglichen.
+
+\subsubsection{Datenbankverwaltungssystem}
+
+Mit einem \ac{DBMS} wird der Zugriff auf die Datenbasis, die Kontrolle der Konsistenz und die Modifikation der Datenbasis ermöglicht. Beispiele: Microsoft SQL Server, CICS von IBM.
+
+\subsection{Die Gründe für den Einsatz von Datenbanken beschreiben (Kapitel 1.1)}
+
+\begin{itemize}
+	\item Redundanz und Inkonsistenz vermeiden
+	\item Zugriffsmöglichkeiten beschränken
+	\item Mehrbenutzerbetrieb ermöglichen
+	\item Verlust von Daten verhindern
+	\item Integritätsverletzungen verhindern
+	\item Sicherheitsprobleme vermeiden
+	\item Entwicklungskosten minimieren
+\end{itemize}
+
+\subsection{Die Datenmodellierung anhand der folgenden Begriffe erläutern:}
+
+\subsubsection{Datenmodell (Kapitel 1.4)}
+
+Das Datenmodell stellt einem Werkzeuge zur Verfügung um die reale Welt in einem Datenbankverwaltungssystem abzubilden. Das Datenmodell kann wie eine Programmiersprache für Datenbanken verstanden werden. 
+
+Das Datenmodell besteht aus einer \ac{DDL} und einer \ac{DML}. Mit der \ac{DDL} wird das Datenbankschema beschrieben. Also die Struktur der Daten (Welche Datentypen, Spalten usw.). Die \ac{DML} besteht aus einer Anfragesprache (z.B. \verb|SELECT|) und einer Manipulationssprache (z.B. \verb|INSERT INTO|). Es gibt auch Datenmodelle für den konzeptionellen Entwurf (z.B. ER-Modell)
+
+\subsubsection{Datenbankschema (Kapitel 1.5)}
+
+Das Datenbankschema legt die Struktur der abgespeicherten Datenobjekte fest. So haben  z.B. alle Studenten eine Matr.-Nr. und einen Namen (Datenbankschema). Aber jeder Student hat einen individuelle Matr.-Nr. und einen anderen Namen. Dieser aktuelle Zustand nennt man Datenbankausprägung. 
+
+Die Datenbankausprägung wird ständig verändert wohingegen das Datenbankschema selten ändert. Eine Änderung am Datenbankschema kann schwerwiegende Folgen haben.

@@ -1,0 +1,21 @@
+\section{Lernziel ND: NoSQL-Datenbanken verstehen und anwenden}
+
+\subsection{Vor- und Nachteile von SQL im Verhältnis zu NoSQL Datenbanken erklären}
+
+SQL bietet viele vordefinierte Funktionen (Userverwaltung, Trigger, Indexierung usw.) welche für die meisten Fällen sehr nützlich sind jedoch auch viel Ballast mit sich bringen. NoSQL ist eine Nischenlösung für Probleme auf welche SQL nicht optimiert ist.
+
+\subsection{NoSQL und Big Data in der Praxis beschreiben}
+
+Man kann sagen, dass SQL in den meisten Fällen genügt. Wenn es keine Spezialanforderungen gibt, ist SQL eine gute und bewährte Art, Daten zu verwalten. In den Fällen mit speziellen Anforderungen lohnt es sich, auf die richtige NoSQL-Technologie zu setzen. 
+
+\subsection{Graphdatenbanken definieren}
+
+Graphdatenbanken bilden Daten als Netzwerke mit beschrifteten Knoten und Kanten ab und liefern effiziente Algorithmen zur Netzwerkanalyse, dort wo SQL an die Grenzen stösst. Graphendatenbanken werden eingesetzt wenn viele Beziehungen unter Objekten dargestellt werden.
+
+\subsection{Einfache Anfragen an eine NoSQL-Datenbank (Graph-DB Neo4J) formulieren}
+
+Neo4J wird mit der Sprache \emph{Cypher} angesteuert. Listing \ref{lst:neo4j} zeigt eine Beispielabfrage.
+
+\begin{lstlisting}[caption={Beispielanfrage mit Cypher},label=lst:neo4j]
+MATCH (customer:Customer)--[:BOUGHT]-->()<--[:IN]--(product:Product) RETURN product,count(product) AS freq ORDER BY freq DESC LIMIT 5
+\end{lstlisting}
