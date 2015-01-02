@@ -2,22 +2,257 @@
 
 \subsection{Die Motivation für Datenbankprogrammierung erklären (relationale Vollständigkeit versus Turing-Vollständigkeit) (Kapitel 4.16, Skript)}
 
+\begin{itemize}
+    \item \textbf{Relationale Vollständigkeit} \\
+    Alle Ausdrücke der relationalen Algebra können umgesetzt werden
+    \item \textbf{Turing-Vollständigkeit} \\
+    Alle Programme, die eine Turing Maschine ausführen kann, können umgesetzt werden, d.h. alle berechnbaren Funktionen können berechnet werden.
+\end{itemize}
+
+SQL ist nicht Turing-Komplett, da folgende Dinge nicht gemacht werden können:
+
+\begin{itemize}
+    \item Rekursion
+    \item Iteration
+    \item Tiefensuche
+    \item bedingte Sprünge
+\end{itemize}
+
 \subsection{Das Konzept der Stored Procedure erläutern (Kapitel 18.6)}
 
-\subsection{Eine Stored Procedure erstellen und in der Datenbank-Shell \\ anwenden (Übung P)}
+Laut dem Buch sind moderne Datenbankserver zu wenig ausgelastet, deshalb wird ein Teil der Applikationslogik in die Datenschicht verlagert. Voraussetzung dafür ist eine Skriptsprache auf dem DB Server - eben die Stored Procedures. \\
+\subsubsection{Vorteile}
+\begin{itemize}
+    \item \textbf{Bessere Sicherheitsanalyse} \\
+        Schutz vor SQL Injections etc.
+    \item \textbf{Optimierter Code} \\
+        SQL Abfragen können vom integrierten Anfrageprozessor optimiert werden, der gesamte Code kann in Assemblercode kompilliert werden und muss nicht erst interpretiert werden.
+    \item \textbf{Konziser Code} \\
+        Weniger Zeilen Code benötigt.
+    \item \textbf{Wiederverwendbarkeit} \\
+        Eine Funktion kann von diversen Clients verwendet werden und muss nicht jedesmal neu implementiert werden.
+    \item \textbf{Wartbarkeit} \\
+        Änderungen müssen nur zentral an einer Stelle durchgeführt werden.
+    \item \textbf{Performance} \\
+        Unnötige Roundtrips zwischen Applikation und DB werden vermieden. Kann z.B. bei einer Rekursion ein erheblicher Performancegewinn bedeuten, da nur das Resultat zurück zum Clientprogramm geschickt wird.    
+\end{itemize}
+
+\subsubsection{Nachteile:}
+Hinweis: Dazu steht im Buch nichts, aber zur Horizonterweiterung:
+\begin{itemize}
+    \item \textbf{Testbarkeit} \\
+    Wird erschwert durch Stored Procedures, gibt es SQL Unit Tests?
+    \item \textbf{SOLID Prinzipien} \\
+    Wo ist denn jetzt die Businesslogik? In der DB oder in der Clientapplikation? Verletzung der Separation of Concerns.
+    \item \textbf{Validierung} \\
+    Sollte nur an einer Stelle geschehen, hier dieselbe Validierung auf unterschiedlichen Applikationsschichten.
+    \item \textbf{Debugging} \\
+    Debugging wird komplexer.
+\end{itemize}
+
+
+\subsection{Eine Stored Procedure erstellen und in der Datenbank-Shell anwenden \\ (Übung P)}
+
+\begin{lstlisting}[caption={Grundgerüst Stored Procedure},label=lst:gerüst_storedprocedure]
+DROP PROCEDURE IF EXISTS test;
+DELIMITER $$
+CREATE PROCEDURE test(arg1 int, arg2, int) begin
+
+...
+
+END $$
+DELIMITER ;
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption={Aufruf Stored Procedure},label=lst:aufruf_storedprocedure]
+CALL test(100);
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption={Aufruf Stored Procedure},label=lst:aufruf_storedprocedure]
+CALL test(100,200);
+\end{lstlisting}
+
+\subsubsection{Delimiter}
+Der Delimiter bezeichnet das Ende einer Zeile. Standardmässig ist der Delimiter auf ein Semikolon \verb|;| eingestellt. Da die gesamte Prozedur aber als Solches übergeben werden soll, muss das Ende der Zeile temporär umgestellt werden, üblicherweise zu \verb|$$|. Am Schluss der Prozedur wird es wieder auf ein Semikolon zurückgestellt.
+
+\subsubsection{Cursor}
+
+\begin{lstlisting}[caption={Verwendung vom Cursor},label=lst:cursor_verwendung]
+/* Cursor zuerst deklarieren*/
+DECLARE curName CURSOR FOR /* SQL Statement */
+    
+/*Hier setzt man die Variable "hasNext" auf false wenn das Resultset erschöpft ist */
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET hasNext = FALSE;
+
+/*Öffnen des Cursors*/
+OPEN curName;
+
+/*Kann mehrmals aufgerufen werden, um z.B. die nächste Zeile zu erhalten*/
+FETCH curName INTO var1, var2, ...;
+    
+/*Zum Schluss wieder schliessen*/
+CLOSE curName;
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Komplettbeispiel mit Cursor},label=lst:cursor_komplett]
+DROP PROCEDURE IF EXISTS test;
+DELIMITER $$
+CREATE PROCEDURE test(arg1 int, arg2, int) begin
+    
+    DECLARE hasNext INT DEFAULT TRUE;
+    
+    /* Cursor zuerst deklarieren*/
+    DECLARE curName CURSOR FOR /* SQL Statement */
+    
+    /*Hier setzt man die Variable "hasNext" auf false wenn das Resultset erschöpft ist */
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET hasNext = FALSE;
+    
+    /*Öffnen des Cursors*/
+    OPEN curName;
+    
+    /*Loop definieren*/    
+    iterate_nodes: LOOP
+        FETCH curName INTO var1, var2, ...;
+        
+        /*Hier kann man nun überprüfen, ob FETCH überhaupt noch Daten hat.*/
+        IF NOT hasNext THEN 
+            LEAVE iterate_nodes;
+        END IF;
+        
+    END LOOP iterate_nodes;
+    
+    
+    /*Zum Schluss wieder schliessen*/
+    CLOSE curName;
+
+
+
+END $$
+DELIMITER ;
+\end{lstlisting}
+
+\subsubsection{Variabeln}
+\begin{lstlisting}[caption={Variabeln},label=lst:vars]
+    
+    /*Normale Deklaration von Variablen*/
+
+    DECLARE varName,... varType;
+    /* z.B. */
+    DECLARE myName VARCHAR(20); 
+    DECLARE x,y,z INT;
+
+    /*Deklaration mit Default Werten*/
+
+    DECLARE varName varType DEFAULT value;
+    /* z.B. */
+    DECLARE x INT DEFAULT 0;
+      
+\end{lstlisting}
+
+\subsubsection{Kontrollstrukturen}
+\begin{lstlisting}[caption={If Else},label=lst:if]
+    IF cond1 THEN
+      action1
+    ELSEIF cond2 THEN
+      action2
+    ELSEIF cond3 THEN
+      action3
+    ELSE
+      elseaction
+    END IF;
+\end{lstlisting}
+\begin{lstlisting}[caption={Select Case},label=lst:select_case]
+    CASE varName
+      WHEN val1 THEN 
+          action1
+      WHEN val2 THEN 
+          action2
+      ELSE 
+          elseaction
+    END CASE;
+
+\end{lstlisting}
+
+\begin{lstlisting}[caption={While Loop},label=lst:loops_while]
+    WHILE cond DO
+      ...
+    END WHILE
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Repeat / Until},label=lst:loops_repeatuntil]
+    REPEAT
+      ...
+    UNTIL cond
+    END REPEAT;
+\end{lstlisting}
+Entsprechung in der Java-Welt: do while
+\begin{lstlisting}[caption={Loop Loop},label=lst:loops_loop]
+    test_loop:LOOP
+        ...
+        IF (cond) THEN
+            LEAVE test_loop;
+        ...
+    END LOOP test_loop;
+\end{lstlisting}
+Der "Loop Loop" (richtiger Name dem Autor der Zusammenfassung leider unbekannt), wiederholt sich immer, bis ein \verb|LEAVE (label)| auftritt.
 
 \subsection{Die Grundbegriffe von JDBC erklären (Kapitel 4.23)}
 
 \subsubsection{Standardisierung}
 
+SQL ist ja bereits standardisiert. Nun gilt es, den genauen technischen Zugriff ebenfalls zu kapseln. Dies geschieht über eine Abstraktionsschicht mit Hilfe von Treibern.
+
 \subsubsection{Treiber}
+Der Treiber implementiert die genaue technische Funktionalität des Datenbankzugriffs für eine spezifische Datenbank. Beispielsweise gibt es einen Treiber für den Zugriff auf einen MySQL Server und einen anderen Treiber für ein PostgreSQL Server.
 
 \subsubsection{DriverManager}
+Eine Javaklasse, welche die Verbindung mit dem Datenbankserver herstellt. Benötigt gewisse Parameter wie URL, Benutzername und Passwort. \\
+Damit der DriverManager die Verbindung herstellen kann, muss zuerst ein Treiber geladen werden. Dies geschieht über die Anweisung \verb|Class.forName(...)|.
 
 \subsubsection{Connection}
-
+Eine Javaklasse, in der die konkrete Verbindung gespeichert wird. Aus einem \verb|Connection|-Objekt kann man \verb|Statement|-Objekte erzeugen. Am Ende des Programmes muss am \verb|Connection|-Objekt noch die Methode \verb|.close()| aufgerufen werden, um die Verbindung zu schliessen.
 \subsubsection{Statement}
+\verb|Statement| Objekte beinhalten konkrete SQL Skripte / Abfragen. Mit \verb|.executeQuery(...)| können die SQL Skripte / Abfragen direkt ausgeführt werden. Als Resultat liefert das \verb|Statement|-Objekt ein \verb|ResultSet| zurück.
 
-\subsubsection{Resultset}
+\subsubsection{ResultSet}
+Das ResultSet ist im Prinzip ein Iterator. Der Zugriff auf einzelne Reihen des Resultats geschieht via dem Methodenaufruf \verb|resultset.next()|. Diese Methode liefert einen Boolean Wert zurück, welcher für das Erstellen von Schlaufen verwendet werden kann. Um Werte der Spalten eines Resultats auszulesen benötigt man folgenden Aufruf: \verb|resultset.getString(columnLabel)|. 
 
+\newpage
 \subsection{Ein Java-Programm mit JDBC schreiben, welches von aussen auf die Datenbank zugreift (Übung P)}
+
+\begin{lstlisting}[caption={JDBC Beispielprogramm},label=lst:jdbc_sample]
+
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class SimpleConnection {
+
+    public static void main(String[] args) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+
+            try (Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://127.0.0.1:3306/uni", "root", "")) {
+
+                Statement statement = connection.createStatement();
+
+                ResultSet result = statement.executeQuery("SELECT * FROM PROFESSOREN");
+
+                while (result.next()) {
+                    System.out.println(result.getString("Name"));
+                }
+
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e);
+        }
+    }
+}
+\end{lstlisting}
+
+
