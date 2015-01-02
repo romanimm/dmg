@@ -2,10 +2,79 @@
 
 \subsection{Identifikation und Autorisierung in SQL umsetzen (create user)}
 
+Die Funktion \verb|password()| generiert einen Passwordhash. Dieser Hash kann dann verwendet werden um einen Benutzer zu erstellen. Listing \ref{lst:create-user} zeigt wie man einen Benutzer in MySQL erstellt.
+
+\begin{lstlisting}[caption={Benutzer erstellen},label=lst:create-user]
+-- Hash generieren
+select password('abcdefg_12'); -- *58DDF826FB6D08F2D78CE691773F242F10C161A1
+-- Benutzer erstellen
+create user reader identified by password '*58DDF826FB6D08F2D78CE691773F242F10C161A1';
+\end{lstlisting}
+
 \subsection{Zugriffskontrolle auf Tabellen in SQL umsetzen (grant, revoke)}
+
+Es existieren zwei Sicherheitsstrategien:
+
+\begin{itemize}
+	\item \ac{DAC} \\
+		  Definiert Regeln pro Objekt (z.B. Tabellen)
+	\item \ac{MAC} \\
+		  Zusätzliche Regeln für Informationsfluss zwischen Objekt und User (mehr Sicherheit)
+\end{itemize}
+
+In SQL wird nur \ac{DAC} mit den Befehlen \verb|grant| und \verb|revoke| angeboten. Listing \ref{lst:grant-revoke} zeigt ein Beispiel für die Vergabe von Rechten auf eine Tabelle.
+
+\begin{lstlisting}[caption={Rechte auf Tabelle},label=lst:grant-revoke]
+-- Leserechte auf Attribut MatrNr von Tabelle prüfen für Benutzer reader
+-- 'with grant option' ermöglicht dem Benutzer das Recht an weitere Benutzer zu vergeben
+grant select (MatrNr)
+	on prüfen
+	to reader
+	with grant option;
+-- Weitere Rechte: delete, insert, update, references (Fremdschlüssel erstellen)
+
+-- Rechte entziehen
+-- 'cascade' entzieht auch die vom Benutzer an andere Benutzer vergebenen Rechte
+revoke select (MatrNr)
+	on prüfen
+	to reader
+	cascade;
+\end{lstlisting}
 
 \subsection{Zugriffskontrolle auf Zeilen und Spalten (views mit grants)}
 
+Möchte man ein Recht von bestimmten Bedingungen abhängig machen, kann das mit Sichten realisiert werden. Listing \ref{lst:view-grant} zeigt als Beispiel den Tutoren alle Daten der Studenten im ersten Semester.
+
+\begin{lstlisting}[caption={Rechte auf Zeilen und Spalten},label=lst:view-grant]
+-- Sicht mit Bedingung erstellen
+create view ErstSemestler as
+	select MatrNr, Name
+	from Studenten
+	where Semester = 1;
+-- Leserecht an Tutoren vergeben
+grant select
+	on ErstSemestler
+	to tutor;
+\end{lstlisting}
+
 \subsection{Den Mechanismus von SQL-Injections erklären}
 
+Um SQL-Abfragen flexibel zu gestalten, können vom Benutzer Parameter an die Abfrage übergeben werden. Diese Parameter können z.B. über ein HTML-Formular entgegengenommen werden. Ein Angreifer kann über dieses Formular ausführbaren SQL-Code in die Abfrage einschleusen. Deshalb darf man Benutzereingaben niemals vertrauen! Listing \ref{lst:sql-injection} zeigt eine Möglichkeit einer SQL-Injection.
+
+\begin{lstlisting}[caption={SQL-Injection},label=lst:sql-injection]
+-- Angreifer gibt als Passwort 'weissIchNichtAberEgal' or 'x' = 'x' ein
+-- Da die Bedingung 'x' = 'x' immer wahr ist braucht der Angreifer das Passwort gar nicht zu wissen.
+select *
+from Studenten s join prüfen p on s.MatrNr = p.MatrNr
+where s.Name = 'Schopenhauer' and
+s.Passwort = 'weissIchNichtAberEgal' or 'x' = 'x'
+\end{lstlisting}
+
 \subsection{Zwei Lösungen beschreiben, welche vor SQL-Injections schützen}
+
+\begin{enumerate}
+	\item \textbf{Prepared Statements (Client)} \\
+		  Bei Prepared Statements werden die Parameter als Platzhalter mitgegeben und die Eingaben vom Benutzer später an die Anfrage gebunden. Das ermöglicht dem \ac{DBMS} die Eingaben vor der Ausführung zu prüfen.
+	\item \textbf{Stored Procedures (Server)} \\
+		  Haben den selben Effekt wie Prepared Statements, sind jedoch direkt in der Datenbank (Server) gespeichert.
+\end{enumerate}
