@@ -1,7 +1,57 @@
-\section{Lernziel S2: Fortgeschrittene Konstrukte von SQL auf einem Datenbankserver anwenden}
+\section{Lernziel S2: Fortgeschrittene Konstrukte von SQL auf einem Datenbankserver anwenden (Kapitel 4.9 - 4.18)}
 
 \subsection{Geschachtelte Anfragen (inline views)}
-\subsection{Mengen-Operatoren (union, in)}
+
+SQL Abfragen können geschachtelt werden. Dabei werden 2 Unterarten unterschieden:
+
+\begin{itemize}
+  \item \textbf{Rückgabe besteht aus einem Tupel mit einem einzigen Wert} \\
+  Das könnte z.B. sein, wenn man ein einfaches \texttt{SELECT COUNT(*) FROM Studenten} ausführt. \\
+  Kann dort eingefügt werden, wo ein skalarer Wert erwartet wird.
+  \item \textbf{Rückgabe besteht aus mehreren Tupeln} \\
+  Dies ist ein normaler Select, z.B. \texttt{SELECT * FROM Studenten} \\
+  Wird häufig in Kombination mit Mengenoperatoren eingesetzt (siehe Kapitel \ref{sec:mengen_operatoren}).
+\end{itemize}
+
+Nun kann es sein, dass in der Unterabfrage ein Attribut der Oberabfrage referenziert wird. Als Beispiel:
+
+\begin{lstlisting}[caption={Korrelierte Unterabfrage},label=lst:unterabfrage_korreliert]
+    SELECT PersNr, Name, (SELECT sum(SWS) AS Lehrbelastung 
+                          FROM Vorlesungen WHERE gelesenVon = PersNr)
+    FROM Professoren;
+\end{lstlisting}
+
+Hier wird in der Unterabfrage das Attribut PersNr von der Oberabfrage verwendet. Dies ist möglichst zu vermeiden, da für jedes auszuwertende Tupel der Oberabfrage die Datenbank auch alle Unterabfragen auswerten muss. Dies könnte erhebliche Perfomanceeinbusse zur Folge haben. Oft kann man dieses Problem aber mit einem einfachen JOIN oder einer Aggregatsfunktion umgehen.
+
+\subsubsection{Temporäre Sichten}
+Mit dem Operator \texttt{WITH} kann sehr einfach eine temporäre Relation definiert werden, die wie eine normale Tabelle anschliessend abgefragt werden kann. Dies stellt eine lesbarere Alternative zu Verschachtelten Abfragen dar.
+
+\begin{lstlisting}[caption={with Operator},label=lst:with]
+	WITH abfrage AS (
+	    /*SQL Abfrage hier*/
+	)
+	
+	SELECT * FROM abfrage;
+\end{lstlisting}
+
+
+\subsection{Mengen-Operatoren (union, in)}\label{sec:mengen_operatoren}
+
+\subsubsection{union}
+Beispiel für eine Union Abfrage:
+
+\begin{lstlisting}[caption={Union Abfrage Beispiel},label=lst:union_bsp]
+	(SELECT Name FROM Assistenten)
+	UNION
+	(SELECT Name FROM Professoren);
+\end{lstlisting}
+
+Fügt also einfach 2 Abfrageergebnisse zusammen. Die Ergebnisse müssen aber übereinstimmende Attribute haben. Zudem werden Duplikate automatisch entfernt. Mit \texttt{UNION ALL} können die Duplikate beibehalten werden.
+
+\subsubsection{in}
+
+Mit dem \texttt{in} Operator wird einfach getestet ob ein Element Teil einer anderen Menge ist. 
+
 \subsection{Quantifizierte Anfragen (exists)}
 \subsection{Nullwerte (null)}
 \subsection{Vergleichsoperatoren (between, in, like, case when)}
