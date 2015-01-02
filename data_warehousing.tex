@@ -2,16 +2,70 @@
 
 \subsection{Den Begriff des Data Warehouse definieren (17.2)}
 
-\subsubsection{Subject Orientation}
+\subsubsection{Subject Orientation (Themenorientierung)}
 
-\subsubsection{Integration (ETL)}
+Die Auswahl der in das Data-Warehouse zu übernehmenden Daten geschieht nach bestimmten Datenobjekten (Produkt, Kunde, Firma usw.), die für die Analysen von Kennzahlen für Entscheidungsprozesse relevant sind, nicht hingegen nach operativen Prozessen (Fertigung, Lager usw.)
 
-\subsubsection{Non-Volatile}
+\subsubsection{Integration ETL (Vereinheitlichung)}
 
-\subsubsection{Time-Variant}
+Das Data Warehouse besitzt meist Daten aus mehreren operativen Datenbanken. Der Datenbestand des Data Warehouses muss periodisch aufgefrischt werden. Die Daten werden auch verdichtet und in ein einheitliches Format gebracht bevor sie im Data Warehouse abgelegt werden. Diese Vorgänge werden als \ac{ETL} bezeichnet.
+
+\subsubsection{Non-Volatile (Beständigkeit)}
+
+Daten werden dauerhaft (nicht-flüchtig) gespeichert.
+
+\subsubsection{Time-Variant (Zeitorientierung)}
+
+Analysen über zeitliche Veränderungen und Entwicklungen sollen im Data Warehouse ermöglicht werden. Daher ist die langfristige Speicherung der Daten im Data-Warehouse nötig.
 
 \subsection{OLAP versus OLTP unterscheiden (17.2.1)}
 
+\ac{OLTP} Datenbanken realisieren das Tagesgeschäft und operieren mit dem aktuellsten Datenbestand. \ac{OLAP} Datenbanken arbeiten mit grösseren, historischen Daten um z.B. Rückschlüsse auf die Entwicklung eines Unternehmens zu nehmen. Die beiden Datenbanktypen werden nicht auf demselben Datenbestand ausgeführt. Tabelle \ref{tab:oltp-olap} zeigt eine Gegenüberstellung.
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|l|c|c|}
+		\hline  				& \ac{OLTP} 			& \ac{OLAP} 									\\ 
+		\hline Daten 			& produktive Datenbank 	& Datenbank für Entscheidungsunterstützung 		\\ 
+		\hline Operationen		& read, write, delete  	& read only 									\\
+		\hline Zeitperiode 		& aktuelle Daten 		& historische, aktuelle und zukünftige Daten 	\\ 
+		\hline Granularität 	& detailliert 			& von grob bis fein 							\\ 
+		\hline Antwortzeit 		& kurz (ms - s) 		& lang (s - min) 								\\ 
+		\hline Verfügbarkeit 	& hoch 					& mittel 										\\ 
+		\hline Anzahl Benutzer 	& viel 					& wenige 										\\ 
+		\hline 
+	\end{tabular}
+	\label{tab:oltp-olap}
+	\caption{OLTP versus OLAP}
+\end{table}
+
+
 \subsection{Multidimensionale Daten verstehen (17.2.3)}
 
+In der Data Warehouse Theorie werden Daten oft in Form eines mehrdimensionalen Würfels dargestellt (Abbildung \ref{fig:mehrdimensionaler-wuerfel}).
+
+\mygraphics{0.4\textwidth}{fig/mehrdimensionaler_wuerfel.png}{Mehrdimensionaler Würfel}{mehrdimensionaler-wuerfel}
+
+Die Information die man überprüfen möchte ist z.B. der Umsatz verschiedener Produkte. Die Kanten des Würfel zeigen die verschiedenen Möglichkeiten auf nach denen der Umsatz gruppiert werden kann (z.B. Umsatz von Produkt xy im Gebiet zw im Jahr 2014). 
+
+In SQL kann diese Gruppierung mit \verb|group by| erstellt werden. Werden mehr Attribute in \verb|group by| aufgenommen, werden die Daten weniger stark verdichtet (\emph{drill down}) d.h. es werden mehr Daten angezeigt (z.B. Umsatz nach Produkt und Zeit). Lässt man Attribute vom \verb|group by| weg, werden die Daten mehr verdichtet (\emph{roll up}) d.h. es werden weniger Daten angezeigt (z.B. Umsatz nur noch nach Zeit).
+
+Beim sogenannten \emph{slicing} werden Scheiben aus dem Datenwürfel ausgeschnitten. Beim sogenannten \emph{dicing} werden mehre \emph{slicing}-Vorgänge gleichzeitig vorgenommen und somit wird ein kleinerer Würfel erzeugt.
+
 \subsection{Den Star Join anwenden (Übung DW, 17.2.2)}
+
+Das Sternschema besteht aus einer Faktentabelle und mehreren Dimensionstabellen, welche über Fremdschlüssel in der Faktentabelle eingetragen sind. Die Dimensionstabellen sind nicht normalisiert.
+
+Mit einem Star Join werden die Dimensionstabellen mit der Faktentabelle verbunden. Listing \ref{lst:star-join} zeigt eine Beispielanfrage.
+
+\begin{lstlisting}[caption={Star Join},label=lst:star-join]
+-- Welche Handys haben junge Kunden in den bayrischen Filialen zu Weihnachten 2014 gekauft?
+select sum(v.Anzahl), p.Hersteller
+from Verkäufe v, Filialen f, Produkte p, Zeit z, Kunden k
+where z.Saison = 'Weihnachten' and
+	  z.Jahr = 2014 and k.wieAlt < 30 and
+	  p.Produkttyp = 'Handy' and f.Bezirk = 'Bayern' and
+	  v.VerkDatum = z.Datum and v.Produkt = p.ProduktNr and
+	  v.Filiale = f.FilialenKennung and v.Kunde = k.KundenNr
+group by p.Hersteller;
+\end{lstlisting}
