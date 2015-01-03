@@ -190,11 +190,32 @@ Analog zum left outer join, der right outer join.
 \subsubsection{full join}
 Hier werden einfach der \texttt{left outer join} und der \texttt{right outer join} zusammengefasst, denn es werden alle Datensätze aus beiden Tabellen sicher ausgegeben.
 
-\mygraphics{0.2\textwidth}{fig/rightjoin}{Full Join}{Full Join}
+\mygraphics{0.2\textwidth}{fig/fulljoin.png}{Full Join}{Full Join}
 \begin{lstlisting}[caption={Full Join SQL}]
     SELECT * FROM Kunden
     FULL JOIN Produkte;
 \end{lstlisting}
+
+Hinweis; dies geht auf dem MySQL Server nicht. Dort muss das anders gelöst werden:
+
+\begin{lstlisting}[caption={Full Outer Join in MySQL}]
+SELECT
+  *
+FROM
+  Kunden
+LEFT JOIN
+  Produkte
+  
+UNION
+
+SELECT
+    *
+FROM
+    Kunden
+RIGHT JOIN
+    Produkte;
+\end{lstlisting}
+
 
 \subsubsection{join on}
 Es kann explizit angegeben werden, welche Attribute die Schlüssel sind, auf denen die Tabellen verbunden werden sollen.

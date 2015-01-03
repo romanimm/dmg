@@ -94,8 +94,8 @@ Trigger sind Prozeduren, die zu vordefinierten Zeitpunkten auf der Datenbank aus
 Mögliche Aktionen, die ein Trigger auslösen;
 \begin{itemize}
   \item insert
-  \insert update
-  \insert delete
+  \item update
+  \item delete
 \end{itemize}
 
 Trigger können vor und/oder nach diesen Aktionen ausgeführt werden (\texttt{before} und \texttt{after}). In den Prozeduren selbst kann auf die eingefügten / geänderten (neu und alt!) / gelöschten Tupeln Bezug genommen werden sowie können diese auch verändert werden.
@@ -103,18 +103,15 @@ Trigger können vor und/oder nach diesen Aktionen ausgeführt werden (\texttt{be
 \subsection{Trigger auf der Datenbank implementieren (Kap. 5.7; Übung DI)}
 
 \begin{lstlisting}[caption={Trigger Beispiel SQL}]
-    CREATE TRIGGER keineDegradierung
-    BEFORE UPDATE ON Professoren
-    FOR EACH ROW
-        WHEN (old.Rang IS NOT NULL)
-        BEGIN
-           IF (old.Rang = 'C3' AND new.Rang = 'C2) THEN
-               new.Rang = old.Rang;
-               
-        ... usw.
-        
-        END IF;
-    END
+CREATE TRIGGER keineDegradierung
+BEFORE UPDATE ON Professoren
+FOR EACH ROW
+    WHEN (old.Rang IS NOT NULL) BEGIN
+    IF (old.Rang = 'C3' AND new.Rang = 'C2') THEN
+           new.Rang = old.Rang;
+                /*usw*/
+    END IF
+END;
 \end{lstlisting}
 
 Die diversen Optionen aus dem vorigen Kapitel können natürlich an den entsprechenden Stellen verändert werden. Dies sollte selbstverständlich sein.
