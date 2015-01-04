@@ -80,12 +80,17 @@ Zweite Normalform und zusätzlich:
 \subsection{Weitere Normalformen aufzählen:}
 
 \subsubsection{BCNF}
-
+Muss man nur wissen, dass es das auch gibt... Ist kompliziert.
 
 \subsubsection{mehrwertige Abhängigkeiten}
+\mygraphics{0.6\textwidth}{fig/nf4.png}{Normalform 4}{nf4}
 
-\subsubsection{4NF}
+Wir haben ein Konstrukt wie in Abbildng \ref{fig:nf4} gezeigt. Das heisst dass die Begriffe abhängig sind von der Methode und der Autor ebenfalls. Zudem gibt es mehrere Begriffe und mehrere Autoren. Deswegen trennt man das alles hübsch auf.
+\subsubsection{Vierte Normalform}
+Dritte Normalform, BCNF und zusätzlich:
+\begin{center}
+    \framebox{\textbf{Keine zwei echte und voneinander verschiedene mehrwertige Abhängigkeiten in derselben Tabelle.}}
+\end{center}
 
-\subsubsection{Verbundabhängigkeit}
-
-\subsubsection{5NF}
+\subsubsection{Verbundabhängigkeit / fünfte Normalform}
+Wir haben eine Tabelle \(R\) mit Merkmalen \(A\), \(B\) und \(C\). Wir Teilen diese auf in zwei Tabellen \(R_{1}(A,B)\) und \(R_{2}(B,C)\). Wenn wir diese dann ohne Verfälschung und Informationsverluste wieder in die Tabelle \(R\) zurückführen können, dann erfüllt diese das Kriterium der fünften Normalform.
