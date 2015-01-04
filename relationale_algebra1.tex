@@ -1,17 +1,71 @@
 \section{Lernziel R1: Grundlagen der Relationalen Algebra verstehen}
 
 \subsection{Der Student versteht den Begriff Relation und kann damit umgehen}
+Eine binäre Relation \(R\) von einer Menge \(A\) nach einer Menge \(B\) ist eine Teilmenge des Kreuzproduktes \(A \times B\).
+\begin{equation*}
+    R \subset A \times B
+\end{equation*}
+Elemente aus den Mengen \(A\) und \(B\) sind also Teil der Relation \(R\).
+\begin{equation*}
+  (a,b)\in R
+\end{equation*}
+
 
 \subsection{Der Student kann die Elemente einer binären oder n-stelligen Relation aufzählen}
+Eine \(n\)-stellige Relation \(R\) ist eine Teilmenge des kartesischen Produkts von \(n\) Mengen \(A_{1}, \dotsc, A_{n}\).
+
+
+\( R \subseteq A_{1} \times \dotsb \times A_{n}\)mit \(A_1 \times \dotsb \times A_n = \{(a_1, \dotsc, a_n) \mid a_1 \in A_1, \dotsc, a_n \in A_n\}\).
 
 \subsection{Der Student versteht den Unterschied zwischen Relationen und Funktionen}
+Relationen sind allgemeinere Funktionen. Wenn wir zwei Mengen haben, \(A\) und \(B\). Von der Menge \(A\) jedes Element genau ein Element aus \(B\) hat, dann ist es eine Funktion und auch eine Relation. 
+
+\mygraphics{0.18\textwidth}{fig/funktion}{Beispiel für eine Funktion}{funktion}
+
+Sollte aber ein Element aus der Menge \(A\) mehr als ein Element in der Menge \(B\) zugeordnet haben, dann ist es eine Relation, keine Funktion.
+
+\mygraphics{0.18\textwidth}{fig/relation}{Beispiel für eine Relation}{relation}
 
 \subsection{Der Student kann Relationen als Graphen darstellen}
 
+\subsubsection{Knoten und Kanten}
+Wenn die Menge beider Teile der Funktionen dieselbe ist, kann man jedes Element der Menge als Knoten und die Kanten zwischen den Knoten stellen die Relationen zwischen denen Elementen dar. Siehe Abbildung \ref{fig:relation_knoten_kanten}
+
+\mygraphics{0.3\textwidth}{fig/knoten_kanten}{Relation mit Knoten und Kanten}{relation_knoten_kanten}
+
+\subsubsection{Koordinatensystem}
+Die einzelnen Relationen können allerdings auch als Punkte in einem Koordinatensystem eingetragen werden. Dann können auch die Relationsmengen unterschiedlich sein. Siehe Abbildung \ref{fig:relation_koordinatensystem}.
+\mygraphics{0.5\textwidth}{fig/koordinatensystem}{Relation im Koordinatensystem}{relation_koordinatensystem}
+
 \subsection{Der Student kann reflexive, symmetrische und transitive Relationen identifizieren}
 
+\subsubsection{Reflexive Relationen}
+Bei reflexiven Relationen gilt, dass jedes Element der Menge eine Beziehung mit sich selber hat. Abbildung \ref{fig:relation_knoten_kanten} zeigt eine solche reflexive Relation, gelb markiert.
+
+\subsubsection{Symmetrische Relation}
+Eine Symmetrische Relation besagt, dass zu jeder Relation eine Relation in der Gegenrichtung da ist. Also z.B. wenn es eine Relation (1,2) gibt, muss es auch eine Relation (2,1) geben. Die Formel dazu:
+
+\begin{equation*}
+    \forall x,y \in A ((x,y) \in R \to (y,x) \in R)
+\end{equation*}
+
+\subsubsection{Transitive Relation}
+Eine Relation ist transitiv, wenn es z.B. eine Relation (1,2) und eine Relation (2,3) gibt, dann muss es auch (1,3) geben. Abbildung \ref{fig:relation_knoten_kanten} zeigt eine solche transitive Relation. Formal ausgedrückt:
+
+\begin{equation*}
+  \forall x,y,z \in A ((x,y) \in R \wedge (y,z) \in R \to (x,z) \in R)
+\end{equation*}
+
+
 \subsection{Der Student kann überprüfen, ob eine Relation eine Äquivalenzrelation ist}
+Eine Relation ist eine \emph{Äquivalenzrelation} wenn sie reflexiv, symmetrisch und transitiv ist.
 
 \subsection{Der Student kann eine Menge, auf der eine Äquivalenzrelation definiert ist, in Äquivalenzklassen aufteilen}
 
+
+%%ToDo:
+
+Nein kann ich noch nicht... Was ist das??!!
 \subsection{Der Student versteht die Korrespondenz zwischen Relationen und Tabellen}
+
+Bei Relationen ist die Reihenfolge der Tupel wichtig. Bei Tabellen wird jedem Element des Tupels noch ein eindeutiger Name zugewiesen, weswegen dann die Reihenfolge keine Rolle mehr spielt.
