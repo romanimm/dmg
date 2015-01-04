@@ -1,14 +1,86 @@
 \section{Lernziel NF: Datenmodelle normalisieren}
 
 \subsection{Sinn und Zweck der Normalformen erklären (2.4.1)}
+Normalformen sollen redundante Informationshaltung in den Dantenbankschemas vermeiden, da diese Probleme bereiten können.
+
+\subsubsection{Redundanz}
+\mygraphics{0.8\textwidth}{fig/redundanz}{Redundante Tabelle}{redundanz}
+\texttt{A\#} verweist in dieser Tabelle auf die Abteilungsnummer, und die Bezeichnung auf die Abteilungsbezeichnung. Die Bezeichnung könnte ohne Informationsverlust gestrichen werden, da z.B. die Abteilungsnummer \textit{A6} sowieso immer die Finanzabteilung ist. Besser wäre es, diese Informationen auszulagern. Zudem macht es keinen Sinn, dieselbe Abteilungsbezeichnung mehrfach zu speichern, wenn eine simple Referenz darauf zeigen könnte.
+
+\subsubsection{Anomalien}
+Mit der besprochenen Redundanz treten folgende Anomalien auf:
+\begin{itemize}
+  \item \textbf{Einfügeanomalie} \\
+  Eine neue Abteilung kann nicht ohne weiteres hinzugefügt werden, da ohne ein neuer Mitarbeiter ja keine Abteilung hinzugefügt werden kann, da die Abteilung ja nicht für sich selbst notiert wird.
+  \item \textbf{Löschanomalie} \\
+  Wenn die Mitarbeiter gelöscht werden, verliert man auch die Information über die Abteilungen.
+  \item \textbf{Änderungsanomalie} \\
+  Der Name einer Abteilung ändert. Nun muss bei jedem Mitarbeiter die Bezeichnung angepasst werden.
+\end{itemize}
+
 
 \subsection{Funktionale Abhängigkeit erkennen und für die Herleitung der Normalformen 1 und 2 anwenden (Kap. 2.4.2)}
+\subsubsection{Funktionale Abhängigkeit}
+Die Mitarbeiternummer ist eindeutig. Zu jeder Mitarbeiternummer gehört genau ein Name und einen Ort. Diese Zuordnung bestimmt die Mitarbeiternummer also eindeutig. Daher ist der Name und der Ort \emph{funktional abhängig} von der Mitarbeiternummer.
+
+Formal ausgedrückt heisst das: Für einen Identifikationsschlüssel \(S\) und ein beliebiges Merkmal \(B\) einer Tabelle gilt die funktionale Abhängigkeit \(S \rightarrow B\).
+\subsubsection{Volle funktionale Abhängigkeit}
+Es kann auch zusammengesetzte Schlüssel geben, also ein Schlüssel \(S\) besteht aus \(S_{1}\) und \(S_{2}\). Ein Merkmal (also z.B. der Name) ist nur dann \emph{\textbf{voll} funktional  abhängig}, wenn das Merkmal nur aus der Zusammensetzung beider Schlüssel \(S_{1}\) und \(S_{2}\) hergeleitet werden kann. Wenn \(S_{1}\) alleine bereits genügen würde, wäre es zwar von \(S_{1}\) funktional abhängig, aber nicht \emph{voll} funktional abhängig. Klar soweit?
+\mygraphics{0.6\textwidth}{fig/nf_1_2.png}{Normalform 1 und 2}{nf12}
+
+Ein Beispiel. Wir haben die Tabelle in der ersten Normalform von der Abbildung \ref{fig:nf12}. Nun haben wir dort ein zusammengsetztes Schlüsselpaar, bestehend aus Mitarbeiternummer und Projektnummer. Nun kann z.B. eindeutig gesagt werden, dass der Name des Mitarbeiters mit Nummer 7 und Projekt 1 'Huber' ist. Also ist das Merkmal \emph{Name} funktional abhängig vom Schlüsselpaar M\# und P\# .
+
+Nun könnte man ja auch den Namen 'Huber' alleine aus der Mitarbeiternummer herleiten, dafür bräuchte es gar keine Projektnummer! Genau deswegen ist der Name hier auch nicht \emph{voll} funktional abhängig vom Schlüsselpaar. Denn nach der Definition ist eine \emph{volle funktionale Abhängigkeit} nur dann gegeben, wenn es von Teilen des Schlüssels nicht eindeutig möglich ist, auf das entsprechende Merkmal zu schliessen.
+
+\subsubsection{Erste Normalform}
+\begin{center}
+    \framebox{\textbf{In einer Spalte dürfen keine Mengen, Aufzählungen oder Wiederholungsgruppen sein.}}
+\end{center}
+
+\subsubsection{Zweite Normalform}
+Erste Normalform und zusätzlich:
+\begin{center}
+    \framebox{\textbf{Jedes Nichtschlüsselmerkmal ist von jedem Schlüssel \textit{voll funktional abhängig}.}}
+\end{center}
+
+
+Deswegen wird die Tabelle aus der Abbildung \ref{fig:nf12} in der ersten Normalform aufgeteilt in eine Mitarbeitertabelle und eine Zugehörigkeitstabelle.
 
 \subsection{Den Begriff der transitiven Abhängigkeit erkennen und für die Herleitung der Normalform 3 anwenden (Kap. 2.4.3)}
+\subsubsection{Transitive Abhängigkeit}
+Am besten lässt sich dies an einem Beispiel erläutern;
+\mygraphics{0.6\textwidth}{fig/nf3.png}{Normalform 3}{nf3}
+
+Wir haben den Mitarbeiter Nummer 19. Aus dieser Nummer können wir schliessen, dass unser Mitarbeiter 'Schweizer' heisst und in der Abteilung 'A6' arbeitet. Diese Merkmale sind also \emph{funktional abhängig} von der Mitarbeiternummer. Zudem ist von der Abteilungsnummer 'A6' eindeutig auf dessen Bezeichnung zu schliessen - 'Finanz'. Da wir von der Mitarbeiternummer zur Abteilungsnummer und daraus zu der Bezeichnung eindeutig schliessen können, ist die Bezeichnung ebenfalls \emph{funktional abhängig} von der Mitarbeiternummer.
+
+Formal ausgedrückt:
+\begin{equation*}
+    A\rightarrow B , B\rightarrow C
+\end{equation*}
+Daraus folgt:
+\begin{equation*}
+    A\rightarrow C
+\end{equation*}
+
+Kann jetzt von der Abteilungsnummer ebenfalls eindeutig auf eine einzige Mitarbeiternummer geschlossen werden? Also gilt auch:
+\begin{equation*}
+    B\rightarrow A
+\end{equation*}
+
+Natürlich nicht. Somit ist die Definition für eine \emph{transitive Abhängigkeit} zwischen \(A\) und \(C\) gegeben.
+
+Die mittlere Grafik in der Abbildung \ref{fig:nf3} zeigt dies nochmals grafisch.
+
+\subsubsection{Dritte Normalform}
+Zweite Normalform und zusätzlich:
+\begin{center}
+    \framebox{\textbf{Kein Nichtschlüsselmerkmal ist von irgendeinem Schlüssel transitiv abhängig}}
+\end{center}
 
 \subsection{Weitere Normalformen aufzählen:}
 
 \subsubsection{BCNF}
+
 
 \subsubsection{mehrwertige Abhängigkeiten}
 
