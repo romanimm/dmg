@@ -1,14 +1,87 @@
 \section{Lernziel S1: Die grundlegenden Konstrukte von SQL auf einem
 Datenbankserver anwenden}
 
-\subsection{Schemadefinition (create)}
+\subsection{Schemadefinition (create table)}
 
-\subsection{Schemaveränderung (alter)}
+Listing \ref{lst:create-table} zeigt wie man eine Tabelle anlegt.
 
-\subsection{Einfügen von Datensätzen (insert)}
+\begin{lstlisting}[caption={create table}, label=lst:create-table]
+create table Professoren (
+	-- Dieses Attribut darf nicht leer sein
+	PersNr integer not null,
+	Name varchar(10)
+);
+\end{lstlisting}
+
+\subsection{Schemaveränderung (alter table)}
+
+Listing \ref{lst:alter-table} zeigt wie eine Tabelle verändert werden kann.
+
+\begin{lstlisting}[caption={alter table}, label=lst:alter-table]
+alter table Professoren add (
+	-- Spalte Raum zur Tabelle hinzufügen
+	Raum integer
+);
+\end{lstlisting}
+
+\subsection{Einfügen von Datensätzen (insert into)}
+
+Listing \ref{lst:insert-into} zeigt wie ein Tupel in die Tabelle eingefügt wird.
+
+\begin{lstlisting}[caption={insert into}, label=lst:insert-into]
+-- ohne Spaltennamen
+insert into Professoren values (2136, 'Curie', 'C4');
+-- mit Spaltennamen
+insert into Professoren (PersNr, Name, Raum) values (2136, 'Curie', 'C4');
+\end{lstlisting}
 
 \subsection{Einfache Abfragen (select)}
 
+Listing \ref{lst:select} zeigt unterschiedliche Abfragen.
+
+\begin{lstlisting}[caption={select}, label=lst:select]
+-- alle Attribute von Professor Curie
+select * from Professoren where Name = 'Curie';
+-- nur den Raum von Professor Curie
+select Raum from Professoren where Name = 'Curie';
+-- Alle Professoren nach Namen sortiert (A/1 kommt zuerst)
+select * from Professoren order by Name asc;
+-- Alle Professoren nach Namen sortiert (Z/9 kommt zuerst)
+select * from Professoren order by Name desc;
+-- distinct eleminiert Duplikate
+select distinct Raum from Professoren; 
+\end{lstlisting}
+
 \subsection{Abfragen über mehrere Tabellen (,)}
 
+Listing \ref{lst:multiple-tables} zeigt eine Abfrage über mehrere Tabelle. Über die \verb|where|-Bedingung können Tabellen wie bei einem Join verknüpft werden.
+
+\begin{lstlisting}[caption={Abfragen über mehrere Tabellen}, label=lst:multiple-tables]
+select p.Name, v.Titel from Professoren p, Vorlesungen v where p.PersNr = v.gelesenVon;
+\end{lstlisting}
+
 \subsection{Aggregatfunktionen und Gruppierung (avg, sum, count, min, max, group by)}
+
+\subsubsection{Durchschnitt (avg)}
+
+Die Funktion \verb|avg(column_name)| berechnet den Durchschnitt von numerischen Werten einer Spalte.
+
+\subsubsection{Summe (sum)}
+
+Die Funktion \verb|sum(column_name)| berechnet die Summe von numerischen Werten einer Spalte.
+
+\subsubsection{Zusammenzählen (count)}
+
+Die Funktion \verb|count(column_name)| zählt die Anzahl der Einträge einer Spalte (\verb|null| wird nicht gezählt). Mit der Anweisung \verb|count(*)| wird die Anzahl Ergebnisse einer Anfrage zurückgeliefert.
+
+\subsubsection{Minimum (min)}
+
+Die Funktion \verb|min(column_name)| gibt den kleinsten Wert einer Spalte zurück (Bei Zeichenketten wird bei A begonnen).
+
+\subsubsection{Maximum (max)}
+
+Die Funktion \verb|max(column_name)| gibt den grössten Wert einer Spalte zurück (Bei Zeichenketten wird bei Z begonnen).
+
+\subsubsection{Gruppieren (group by)}
+
+Bei der Funktion \verb|group by column_name| werden die Ergebnisse einer Spalte gruppiert (zusammengefasst).
