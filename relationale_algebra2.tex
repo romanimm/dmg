@@ -2,10 +2,148 @@
 
 \subsection{Der Student versteht wann und wie man übliche Mengenoperationen wie Vereinigung, Durchschnitt und Differenz auf Relationen übertragen kann}
 
-\subsection{Der Student versteht wie man Relationen mittels Auswahl und Projektion verkleinern kann}
+\subsubsection{Vereinigung}
+
+Sind $R$ und $S$ zwei typ-kompatible Relationen (gleiches Schema) so kann man ihre Tupel vereinigen. Man schreibt:
+
+\begin{equation}
+R \cup S
+\end{equation}
+
+\subsubsection{Durchschnitt}
+
+Sind $R$und $S$ zwei typ-kompatible Relationen (gleiches Schema) so kann man ihre Schnittmenge bilden. Man schreibt:
+
+\begin{equation}
+R \cap S
+\end{equation}
+
+\subsubsection{Differenz}
+
+Sind $R$ und $S$ zwei typ-kompatible Relationen (gleiches Schema) so sind im Ergebnis alle Tupel von R enthalten, die in S nicht enthalten sind bilden. Man schreibt:
+
+\begin{equation}
+R \setminus S
+\end{equation}
+
+\subsection{Der Student versteht wie man Relationen mittels Selektion und Projektion verkleinern kann}
+
+\subsubsection{Selektion}
+
+Bei der Selektion werden diejenigen Tupel ausgewählt welche die Bedingungen erfüllen (wie \verb|where| in SQL). Eine Auswahl filtert Zeilen heraus. Das Beispiel wählt alle Studenten aus welche länger als 10 Semester studiert haben:
+
+\begin{equation}
+\sigma_{Semester>10}(Studenten)
+\end{equation}
+
+\subsubsection{Projektion}
+
+Mit einer Projektion können Spalten einer Tabelle ausgewählt werden. Das Beispiel gibt nur die Namen der Professoren aus:
+
+\begin{equation}
+\Pi_{Name}(Professoren)
+\end{equation}
+
+\subsubsection{Umbenennung}
+
+Teilweise ist es notwendig eine Tabelle umzubenennen, weil sie z.B. zweimal vorkommt. Man schreibt:
+
+\begin{equation}
+\rho_{S}(R)
+\end{equation}
 
 \subsection{Der Student versteht, wie man zwei Relationen zu einer einzigen Relationen via Kreuzprodukt oder Join verknüpft und kennt dabei die Unterschiede zwischen verschiedenen Joins}
 
-\subsection{Der Student Kann den Divisionsoperator als Umkehrung des Verbunds (Join) anwenden}
+\subsubsection{Kreuzprodukt}
 
-\subsection{Der Student Kann Relationenalgebraische Ausdrücke umrechnen oder äquivalent darstellen}
+Beim Kreuzprodukt wird jede Zeile der Relation $R$ mit jeder Zeile der Relation $S$ kombiniert (Spezialfall von Join). Man schreibt:
+
+\begin{equation}
+R \times S
+\end{equation}
+
+\subsubsection{Join}
+
+In diesem Abschnitt wird lediglich die Notation von Joins in der relationalen Algebra aufgezeigt. Wie die einzelnen Joins funktionieren ist dem Abschnitt \ref{sec:join} zu entnehmen.
+
+\begin{itemize}
+	\item Cross Join: $R \times S$
+	\item Natural Join: $R \bowtie S$
+	\item $\theta$-Join (Theta-Join): $R \bowtie_{PersNr=gelesenVon} S$
+	\item Left Outer Join: $R \: {\tiny \textifsym{d|><|}} \: S$
+	\item Right Outer Join: $R \: {\tiny \textifsym{|><|d}} \: S$
+	\item Full Outer Join: $R \: {\tiny \textifsym{d|><|d}} \: S$
+\end{itemize}
+
+\subsection{Der Student kann den Divisionsoperator als Umkehrung des Verbunds (Join) anwenden}
+
+Die Division lässt sich am einfachsten mit einem Beispiel erklären:
+
+\begin{table}[!htp]
+	\centering
+	\begin{subtable}[b]{0.3\textwidth}
+		\centering
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			Vater & Mutter & Kind & Alter \\
+			\hline
+			Franz & Helga & Harald & 5 \\
+			\hline
+			Franz & Helga & Maria & 4 \\
+			\hline
+			Franz & Ursula & Sabine & 2 \\
+			\hline
+			Moritz & Melanie & Gertrud & 7 \\
+			\hline
+			\rowcolor{green} Moritz & Melanie & Maria & 4 \\
+			\hline
+			\rowcolor{green} Moritz & Melanie & Sabine & 2 \\
+			\hline
+			Peter & Christina & Robert & 9 \\
+			\hline
+		\end{tabular}
+		\subcaption{Relation $R$}
+	\end{subtable}
+	\begin{subtable}[b]{0.3\textwidth}
+		\centering
+		\begin{tabular}{|c|c|}
+			\hline
+			Kind & Alter \\
+			\hline
+			Maria & 4 \\
+			\hline 
+			Sabine & 2 \\
+			\hline
+		\end{tabular}
+		\subcaption{Relation $S$}
+	\end{subtable}
+	\begin{subtable}[b]{0.3\textwidth}
+		\centering
+		\begin{tabular}{|c|c|}
+			\hline
+			Vater & Mutter \\
+			\hline
+			Moritz & Melanie \\
+			\hline
+		\end{tabular}
+		\subcaption{Ergebnis der Division $R \div S$}
+	\end{subtable}
+	\caption{Divisionsoperator}
+\end{table}
+
+Moritz und Melanie sind die einzigen Eltern, die ein Kind Maria (4 Jahre) und ein Kind Sabine (2 Jahre) haben. Der Rest der Eltern erfüllt die Division nicht.
+
+\subsection{Der Student kann Relationenalgebraische Ausdrücke umrechnen oder äquivalent darstellen}
+
+Alle relationalalgebraischen Ausdrücke lassen sich mit folgenden Ausdrücken:
+
+\begin{itemize}
+	\item $R \cup S$
+	\item $R \setminus S$
+	\item $R \times S$
+	\item $\sigma_p(R)$
+	\item $\Pi_s(R)$
+	\item $\rho_v(R)$
+\end{itemize}
+
+Die restlichen Bezeichnungen (Join, Division) wären nicht nötig und lassen sich durch die obengenannten Ausdrücke ersetzen.
