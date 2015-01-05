@@ -1,9 +1,131 @@
 \section{Lernziel OM: Mit Objektrelationalem Mapping Tabellen als Objekte lesen und schreiben}
 
 \subsection{Die Vorteile von objekt-orientierten Datenbanken (OO-DB) erklären: Methoden, Referenzierung mit Pointer, many-to-many-Relationships, Vererbung}
-
+\subsubsection{Methoden}
+Objekte in OO-DBs können ebenfalls Methoden haben, wie man sich das so gewohnt ist aus dem Java-Umfeld. Diese Methoden kapseln dann den Datenzugriff und können auch komplexere Operationen direkt kapseln. In relationalen Datenbanken findet man dies nicht.
+\subsubsection{Referenzierung mit Pointer}
+Joins benötigt es in OO-DBs nicht mehr. Verwandte Objekte werden direkt über die im Objekt gespeicherte Beziehung angesprochen.
+\subsubsection{many-to-many-Relationships}
+Die m:n Beziehungen benötigen im Relationalen Umfeld immer eine Zwischentabelle. In der OO-DB Welt benötigt es diese nicht mehr, da verwandte Objekte direkt im Objekt als Sammlung von Referenzen abgelegt sind.
+\subsubsection{Vererbung}
+Vererbungen können in relationalen Datenbanken auf 2 Arten abgelegt werden:
+\begin{itemize}
+  \item 1 Tabelle pro Klasse \\
+  Dann wird für jede Ober- und Unterklasse eine eigene Tabelle erstellt. Wenn nun ein Attribut in einer Oberklasse geändert wird, müssen alle Unterklassen dies ebenfalls anpassen.
+  \item Nur erweiterte Attribute in den Untertabellen \\
+  Hier werden für die Unterklassen einfach die erweiterten Attribute in einer seperaten Tabelle gespeichert. Dies liefert den Nachteil, dass die Abfragen sehr viele JOINS beinhalten, welche nicht sonderlich perfomant sind.
+  \item 1 Tabelle pro Hierarchie \\
+  Hier werden alle Attribute in eine einzige Tabelle geschmissen und alle Objekte darin abgelegt. Bei grossen Klassenhierarchien könnte es sein, dass die maximale Anzahl an Spalten erreicht wird. Die Verwendung des \texttt{NOT NULL} Constraints wird ebenfalls nicht möglich sein.
+\end{itemize}
+In OO-DBs hat man das natürlich nicht, dort kann man die Vererbung direkt modellieren.
 \subsection{Die Vorteile von objektrelationalen Mappern erklären: Basis RDBMS (Investitionsschutz), Verwendung in OOP}
-
+\subsubsection{Basis RDMBS (Investitionsschutz)}
+Die weit verbreiteten RDBMS müssen nicht neu entwickelt werden, sie sind bereits stark ausgereift und bereits getätigte Investitionen (Ausbildung, Lizenzen, Hardware) können so geschützt werden.
+\subsubsection{Verwendung in OOP}
+Die objektorientierten Sprachen müssen nicht erweitert werden und dessen Stärken können weiterhin direkt verwendet werden.
 \subsection{Daten mit ORM (JPA) anfragen (JPQL) und in Java verwenden}
+\subsubsection{JPA Grundlagen}
+JPA ist die Middleware zwischen relationalen Datenbanken und der objektorientierten Java Welt. Sie besteht aus folgenden Komponenten:
+\begin{itemize}
+  \item \textbf{EntityManager} \\
+  Objekt für den Zugriff auf persistente Objekte, bietet Funktionen wie suchen, speichern oder Transaktionen an.
+  \item \textbf{Entity} \\
+  Ein einfaches Java Objekt, welches einer Tabelle in einer Datenbank gespeichert wird.
+  \item \textbf{Annotations} \\
+  Diese @-Symbole und Texte, die den Bezug von Instanzvariablen zu Spalten und von Klassen zu Tabellen herstellen.
+  \item \textbf{JPQL}  \\
+    Ähnlich wie SQL. Erlaubt es, Objekte von der Datenbank abzufragen.
+    \item \textbf{persistence.xml} \\
+    Herzstück von JPA - hier werden die Verbindungsdaten gespeichert.
+\end{itemize}
+
+\subsubsection{Code in Java}
+\begin{lstlisting}[caption={JPA Grundlagen in Java}]
+
+public class DMGOO {
+    private EntityManagerFactory emf;
+    private EntityManager em;
+
+    public DMGOO() {
+        emf = Persistence.createEntityManagerFactory("DMG_OOPU");
+        this.em = emf.createEntityManager();
+    }
+
+    public void printProfessoren() {
+
+        Query q = em.createNamedQuery("Professoren.findAll");
+        List<Professoren> result = q.getResultList();
+
+        result.stream().forEach((p) -> {
+            System.out.println(p.getName());
+        });
+    }
+
+    public void printVorlesungenByProfessor(String name) {
+        Query q = em.createQuery(
+        "SELECT v FROM Vorlesungen AS v WHERE v.gelesenVon.name = '" + name + "'");
+
+        List<Vorlesungen> resultVorlesungen = q.getResultList();
+
+        System.out.println("Vorlesungen gelesen von " + name + ":");
+        
+        for (Vorlesungen v : resultVorlesungen) {
+            System.out.println(v.getTitel());
+        }
+    }
+}
+
+
+\end{lstlisting}
+
 
 \subsection{Daten in Java erstellen und in die Datenbank schreiben (persist, merge)}
+
+\subsubsection{Update}
+\begin{lstlisting}[caption={Daten updaten mit JPA}]
+/*Transaktion erstellen + beginnen*/
+EntityTransaction ta = em.getTransaction();
+ta.begin();
+
+/*Den zu updatenden Professor aus der DB holen*/
+Query q = em.createQuery("SELECT p FROM Professoren AS p WHERE p.name = 'Sokrates'", Professoren.class);
+
+Professoren sokrates = (Professoren) q.getSingleResult();
+
+/*Das Objekt updaten*/
+sokrates.setRaum(1234);
+
+/*Entity wieder an JPA übergeben*/
+em.merge(sokrates);
+/*Transaktion commiten*/
+ta.commit();
+\end{lstlisting}
+
+\subsubsection{Create}
+\begin{lstlisting}[caption={Neue Entities generieren mit JPA}]
+/*Auch hier wieder neue Transaktion erstellen und beginnen*/
+EntityTransaction ta = em.getTransaction();
+ta.begin();
+
+/*Dann einfach die gewünschten Objekte erstellen*/
+Professoren p = new Professoren();
+p.setName("Precht");
+p.setRang("C3");
+p.setRaum(1337);
+p.setPersNr(6565);
+
+
+Vorlesungen v = new Vorlesungen();
+v.setVorlNr(789789);
+v.setGelesenVon(p); /*Man kann auch Objekte untereinander referenzieren*/
+v.setTitel("Postmoderne");
+v.setSws(4);
+
+/*Und zum Schluss persistieren*/
+em.persist(p);
+em.persist(v);
+
+/*Commit der Transaktion*/
+ta.commit();
+\end{lstlisting}
+
