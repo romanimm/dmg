@@ -16,43 +16,39 @@ SQL Abfragen können geschachtelt werden. Dabei werden 2 Unterarten unterschiede
 Nun kann es sein, dass in der Unterabfrage ein Attribut der Oberabfrage referenziert wird. Als Beispiel:
 
 \begin{lstlisting}[caption={Korrelierte Unterabfrage},label=lst:unterabfrage_korreliert]
-    SELECT PersNr, Name, (SELECT sum(SWS) AS Lehrbelastung 
-                          FROM Vorlesungen WHERE gelesenVon = PersNr)
-    FROM Professoren;
+SELECT PersNr, Name,
+	(SELECT sum(SWS) AS Lehrbelastung FROM Vorlesungen WHERE gelesenVon = PersNr)
+FROM Professoren;
 \end{lstlisting}
 
-Hier wird in der Unterabfrage das Attribut PersNr von der Oberabfrage verwendet. Dies ist möglichst zu vermeiden, da für jedes auszuwertende Tupel der Oberabfrage die Datenbank auch alle Unterabfragen auswerten muss. Dies könnte erhebliche Perfomanceeinbusse zur Folge haben. Oft kann man dieses Problem aber mit einem einfachen JOIN oder einer Aggregatsfunktion umgehen.
+Hier wird in der Unterabfrage das Attribut PersNr von der Oberabfrage verwendet. Dies ist möglichst zu vermeiden, da für jedes auszuwertende Tupel der Oberabfrage die Datenbank auch alle Unterabfragen auswerten muss. Dies könnte erhebliche Perfomanceeinbusse zur Folge haben. Oft kann man dieses Problem aber mit einem einfachen Join oder einer Aggregatsfunktion umgehen.
 
 \subsubsection{Temporäre Sichten}
 Mit dem Operator \texttt{WITH} kann sehr einfach eine temporäre Relation definiert werden, die wie eine normale Tabelle anschliessend abgefragt werden kann. Dies stellt eine lesbarere Alternative zu Verschachtelten Abfragen dar.
 
 \begin{lstlisting}[caption={with Operator},label=lst:with]
-	WITH abfrage AS (
-	    /*SQL Abfrage hier*/
-	)
-	
-	SELECT * FROM abfrage;
+WITH abfrage AS (/* SQL Abfrage hier */);
+SELECT * FROM abfrage;
 \end{lstlisting}
 
-
-\subsection{Mengen-Operatoren (union, in)}\label{sec:mengen_operatoren}
+\subsection{Mengen-Operatoren (union, in)}
+\label{sec:mengen_operatoren}
 
 \subsubsection{union}
 Beispiel für eine Union Abfrage:
 
 \begin{lstlisting}[caption={Union Abfrage Beispiel},label=lst:union_bsp]
-(SELECT Name FROM Assistenten)
-UNION
-(SELECT Name FROM Professoren);
+(SELECT Name FROM Assistenten) UNION (SELECT Name FROM Professoren);
 \end{lstlisting}
 
-Fügt also einfach 2 Abfrageergebnisse zusammen. Die Ergebnisse müssen aber übereinstimmende Attribute haben. Zudem werden Duplikate automatisch entfernt. Mit \texttt{UNION ALL} können die Duplikate beibehalten werden.
+Fügt einfach 2 Abfrageergebnisse zusammen. Die Ergebnisse müssen übereinstimmende Attribute haben. Zudem werden Duplikate automatisch entfernt. Mit \texttt{UNION ALL} können die Duplikate beibehalten werden.
 
-\subsubsection{in}\label{sec:in_operator}
+\subsubsection{in}
+\label{sec:in_operator}
 
 Mit dem \texttt{in} Operator wird einfach getestet ob ein Element Teil einer anderen Menge ist. Einfaches Beispiel:
 \begin{lstlisting}[caption={Beispiel in Operator},label=lst:in_bsp]
-SELECT Name FROM Professoren
+SELECT Name FROM Professoren 
 WHERE PersNr IN (SELECT gelesenVon FROM Vorlesungen);
 \end{lstlisting}
 
@@ -63,21 +59,19 @@ SELECT * FROM Studenten
 WHERE Semester IN (1,2,3,4);
 \end{lstlisting}
 
-
 Mit dem vorangestellten \texttt{NOT} kann das Gegenteil gezeigt, werden, also dass ein Element \textit{nicht} Teil dieser Menge ist.
 
 \subsubsection{all / any}
+
 %todo evt hier was schreiben
+
 \subsection{Quantifizierte Anfragen (exists)}
 
 \texttt{exists} überprüft, ob eine Unterabfrage leer ist oder nicht. Wenn die Menge leer ist liefert \texttt{exists} \texttt{false} und sonst \texttt{true}.
 
 \begin{lstlisting}[caption={SQL Beispiel mit Exists},label=lst:bsp_exists]
-	SELECT Name
-	FROM Professoren
-	WHERE EXISTS (
-	    SELECT * FROM Vorlesungen 
-	    WHERE gelesenVon = Professoren.PersNr);
+SELECT Name FROM Professoren
+WHERE EXISTS (SELECT * FROM Vorlesungen WHERE gelesenVon = Professoren.PersNr);
 \end{lstlisting}
 
 Diese Abfrage gibt alle Namen der Professoren zurück welche eine Vorlesung lesen.
@@ -107,15 +101,13 @@ Diese Abfrage gibt alle Namen der Professoren zurück welche eine Vorlesung lese
 Folgende Ausdrücke sind gleichwertig:
 
 \begin{lstlisting}[caption={Beispiel between}]
-SELECT * FROM Studenten
-WHERE 1 <= Semester AND Semester <= 4
+SELECT * FROM Studenten WHERE 1 <= Semester AND Semester <= 4
         
-SELECT * FROM Studenten
-WHERE Semster BETWEEN 1 AND 4;
+SELECT * FROM Studenten WHERE Semster BETWEEN 1 AND 4;
 \end{lstlisting}
 
 \subsubsection{in}
-Siehe Kapitel \ref{sec:in_operator}.
+Siehe Abschnitt \ref{sec:in_operator}.
 
 \subsubsection{like}
 Der \texttt{like}-Operator wird häufig in Verbindung mit Suchen von Text eingesetzt. Dabei können Platzhalter eingesetzt werden für unbekannte Teiltexte.
@@ -125,37 +117,36 @@ Der \texttt{like}-Operator wird häufig in Verbindung mit Suchen von Text einges
 \end{itemize}
 
 \begin{lstlisting}[caption={Beispiel für like Operator}]
-    SELECT * FROM Studenten
-    WHERE Name LIKE '%im_n%'
+SELECT * FROM Studenten WHERE Name LIKE '%im_n%'
 \end{lstlisting}
 
 \subsubsection{case when}
 Dies ist am Besten an einem Beispiel erklärt:
 
 \begin{lstlisting}[caption={Beispiel für case when}]
-    SELECT Name, (case when Geschlecht = 1 then 'M'
-                       when Geschlecht = 0 then 'W'
-                       else 'unbekannt' end)
-    FROM Personen
+SELECT Name, (case when Geschlecht = 1 then 'M'
+                   when Geschlecht = 0 then 'W'
+                   else 'unbekannt' end)
+FROM Personen
 \end{lstlisting}
 
-Es wird das erste zurückgegeben, was \texttt{true} ist, der Rest wird dann nicht mehr angeschaut.
+Es wird das erste zurückgegeben, was \texttt{true} ist, der Rest wird nicht mehr angeschaut.
 
 \subsection{Join-Syntax in SQL-92 (join, inner join, outer join)}
 \label{sec:join}
 
 \subsubsection{cross join}
 Bedeutet das Kreuzprodukt.
+
 \begin{lstlisting}[caption={Cross Join}]
-    SELECT * FROM Kunden
-    CROSS JOIN Produkte;
+SELECT * FROM Kunden CROSS JOIN Produkte;
 \end{lstlisting}
 
 \subsubsection{natural join}
 Hier erfolgt der Join über die gleichen Spaltennamen. Sind keine gleichen Spaltennamen da, ist er gleichbedeutend mit einem Kreuzprodukt.
+
 \begin{lstlisting}[caption={Natural Join}]
-    SELECT * FROM Kunden
-    NATURAL JOIN Produkte;
+SELECT * FROM Kunden NATURAL JOIN Produkte;
 \end{lstlisting}
 
 \subsubsection{join / inner join}
@@ -163,132 +154,76 @@ Bedeutet dasselbe. Ist ein sog. \texttt{Theta-Join} aus der relationalen Algebra
 
 \mygraphics{0.2\textwidth}{fig/innerjoin.png}{Inner Join}{Inner Join}
 
-Hier wird Tupel für Tupel verglichen, wenn dann die zu vergleichenden Attribute in beiden Tabellen vorkommen, kommen sie in das Resultat. Gibt es keine Übereinstimmung, wird zur nächsten Zeile gewechselt.
+Hier wird Tupel für Tupel verglichen. Wenn die zu vergleichenden Attribute in beiden Tabellen vorkommen, kommen sie in das Resultat. Gibt es keine Übereinstimmung, wird zur nächsten Zeile gewechselt.
 
+\begin{lstlisting}[caption={JOIN ON Beispiel}]
+SELECT * FROM Kunden
+JOIN Produkte ON Produkte.KäuferID = Kunden.KundenID
+\end{lstlisting}
 
 \subsubsection{left outer join}
 Gleich wie der inner join, allerdings gelangen alle Tupel der linken Tabelle in das Resultat, es könnte sein, dass \texttt{null}-Werte auf der rechten Seite sind. \texttt{left outer join} ist dabei gleichbedeutend wie \texttt{left join}.
 
 \mygraphics{0.2\textwidth}{fig/leftjoin.png}{Left Join}{Left Join}
+
 \begin{lstlisting}[caption={Left Join SQL}]
-    SELECT * FROM Kunden
-    LEFT OUTER JOIN Produkte;
+SELECT * FROM Kunden LEFT OUTER JOIN Produkte;
 \end{lstlisting}
 
 Hier würden nun alle Produkte ausgegeben, und wenn sich zu den Produkten ein Käufer fände, würde dieser mit angegeben. Wenn kein Käufer da wäre, würde \texttt{null} in den entsprechenden Attributen stehen.
-
 
 \subsubsection{right outer join}
 Analog zum left outer join, der right outer join.
 
 \mygraphics{0.2\textwidth}{fig/rightjoin}{Right Join}{Right Join}
-\begin{lstlisting}[caption={Right Join SQL}]
-    SELECT * FROM Kunden
-    RIGHT OUTER JOIN Produkte;
-\end{lstlisting}
 
+\begin{lstlisting}[caption={Right Join SQL}]
+SELECT * FROM Kunden RIGHT OUTER JOIN Produkte;
+\end{lstlisting}
 
 \subsubsection{full join}
 Hier werden einfach der \texttt{left outer join} und der \texttt{right outer join} zusammengefasst, denn es werden alle Datensätze aus beiden Tabellen sicher ausgegeben.
 
 \mygraphics{0.2\textwidth}{fig/fulljoin.png}{Full Join}{Full Join}
+
 \begin{lstlisting}[caption={Full Join SQL}]
-    SELECT * FROM Kunden
-    FULL JOIN Produkte;
+SELECT * FROM Kunden FULL JOIN Produkte;
 \end{lstlisting}
 
-Hinweis; dies geht auf dem MySQL Server nicht. Dort muss das anders gelöst werden:
-
-\begin{lstlisting}[caption={Full Outer Join in MySQL}]
-SELECT
-  *
-FROM
-  Kunden
-LEFT JOIN
-  Produkte
-  
-UNION
-
-SELECT
-    *
-FROM
-    Kunden
-RIGHT JOIN
-    Produkte;
-\end{lstlisting}
-
-
-\subsubsection{join on}
-Es kann explizit angegeben werden, welche Attribute die Schlüssel sind, auf denen die Tabellen verbunden werden sollen.
-
-\begin{lstlisting}[caption={JOIN ON Beispiel}]
-    SELECT * FROM Kunden
-    JOIN Produkte ON Produkte.KäuferID = Kunden.KundenID
-\end{lstlisting}
-
+Hinweis: dies geht auf dem MySQL Server nicht. Left und Right Join müssen mit einem \texttt{UNION} verknüpft werden.
 
 \subsection{Veränderungen am Datenbestand (update, delete)}
-
-\subsubsection{insert}
-Wird benötigt um Werte in eine Tabelle zu schreiben. Beispiel:
-
-\begin{lstlisting}[caption={Beispiel mit Insert}]
-    INSERT INTO Studenten (MatrNr, Name)
-        VALUES (1337, 'Simon');
-\end{lstlisting}
-
-Sollte selbstverständlich sein, was das alles bedeutet. Nach dem Tabellennamen in Klammern werden die Attribute angegeben. Diese müssen nicht vollständig sein, dann fügt die Datenbank einfach einen Nullwert an der betreffenden Stelle ein.
-
-Interessant ist, dass auch folgendes möglich ist:
-\begin{lstlisting}[caption={Beispiel mit Insert aus anderer Tabelle}]
-    INSERT INTO hören (
-                SELECT MatrNr, VorlNr FROM Studenten, Vorlesungen
-                Where Titel = 'Logik');
-\end{lstlisting}
-Dies würde nun alle Studenten in die Tabelle \texttt{hören} einfügen, zusammen mit der Vorlesungsnummer der Logik-Vorlesung.
 
 \subsubsection{update}
 Um Zeilen zu verändern benötigt man das \texttt{update} Statement. Folgendes Beispiel zeigt die Syntax:
 
 \begin{lstlisting}[caption={update Beispiel}]
-    UPDATE Studenten SET Semester = Semester + 1 WHERE MatrNr = 1337;
+UPDATE Studenten SET Semester = Semester + 1 WHERE MatrNr = 1337;
 \end{lstlisting}
 
 \subsubsection{delete}
 Zum Zeilen löschen.
 
 \begin{lstlisting}[caption={delete Beispiel}]
-    DELETE FROM Studenten WHERE MatrNr = 1337;
+DELETE FROM Studenten WHERE MatrNr = 1337;
 \end{lstlisting}
 
 \texttt{delete} kann defaultmässig (zumindest in MySQL) nur ausgeführt werden, wenn in der Bedingung eine primäre Index Spalte vorhanden ist. Folgendes geht also nicht unbedingt:
 
 \begin{lstlisting}[caption={delete ohne Index}]
-    DELETE FROM Studenten WHERE Semester > 10
+DELETE FROM Studenten WHERE Semester > 10
 \end{lstlisting}
 
 \subsection{Sichten (create view)}
 Sichten sind virtuelle Relationen und zeigen darin einen Ausschnitt des gesamten Modells. 
 
-\begin{lstlisting}[caption={create view SQL}]
-    CREATE VIEW prüfenSicht AS 
-        SELECT MatrNr, VorlNr, PersNr
-        FROM prüfen;
+\begin{lstlisting}[caption={Beispiel für eine Sicht}]
+CREATE VIEW PrüferHärte(Name, HärteGrad) AS (   
+    SELECT Professoren.Name, AVG(prüfen.Note) FROM Professoren
+    JOIN prüfen ON Professoren.PersNr = prüfen.PersNr
+    GROUP BY Professoren.Name, Professoren.PersNR
+)
 \end{lstlisting}
 
-Das ist nur ein simples Beispiel für eine Sicht.
-
-\begin{lstlisting}[caption={Komplexere Sicht}]
-    CREATE VIEW PrüferHärte(Name, HärteGrad) AS 
-    (   
-        SELECT Professoren.Name, AVG(prüfen.Note)
-        FROM
-            Professoren
-        JOIN
-            prüfen ON Professoren.PersNr = prüfen.PersNr
-        GROUP BY 
-            Professoren.Name, Professoren.PersNR
-    )
-\end{lstlisting}
-Hier können auch die Spalten umbenannt werden. Sichten vereinfachen Abfragen auch, denn so kann direkt nach der PrüferHärte abgefragt werden, ohne die untere, komplexere Abfrage kennen zu müssen.
+Hier können auch die Spalten umbenannt werden. Sichten vereinfachen Abfragen auch, denn so kann direkt nach der PrüferHärte abgefragt werden, ohne die komplexere Abfrage kennen zu müssen.
 
