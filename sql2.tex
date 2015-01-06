@@ -1,4 +1,4 @@
-\section{Lernziel S2: Fortgeschrittene Konstrukte von SQL auf einem Datenbankserver anwenden (Kapitel 4.9 - 4.18)}
+\section{Lernziel S2: Fortgeschrittene Konstrukte von SQL auf einem Datenbankserver anwenden}
 
 \subsection{Geschachtelte Anfragen (inline views)}
 
@@ -48,22 +48,16 @@ Fügt einfach 2 Abfrageergebnisse zusammen. Die Ergebnisse müssen übereinstimm
 
 Mit dem \texttt{in} Operator wird einfach getestet ob ein Element Teil einer anderen Menge ist. Einfaches Beispiel:
 \begin{lstlisting}[caption={Beispiel in Operator},label=lst:in_bsp]
-SELECT Name FROM Professoren 
-WHERE PersNr IN (SELECT gelesenVon FROM Vorlesungen);
+SELECT Name FROM Professoren WHERE PersNr IN (SELECT gelesenVon FROM Vorlesungen);
 \end{lstlisting}
 
 Es kann auch eine konkrete Menge angegeben werden:
 
 \begin{lstlisting}[caption={Diskrete Menge IN}]
-SELECT * FROM Studenten
-WHERE Semester IN (1,2,3,4);
+SELECT * FROM Studenten WHERE Semester IN (1,2,3,4);
 \end{lstlisting}
 
 Mit dem vorangestellten \texttt{NOT} kann das Gegenteil gezeigt, werden, also dass ein Element \textit{nicht} Teil dieser Menge ist.
-
-\subsubsection{all / any}
-
-%todo evt hier was schreiben
 
 \subsection{Quantifizierte Anfragen (exists)}
 

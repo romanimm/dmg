@@ -3,7 +3,7 @@
 \subsection{Anhand der Entwurfsmethodik den Unterschied zwischen
 Anforderungsspezifikation, konzeptuellem Entwurf (konzeptuelle Ebene)
 und Implementationsentwurf (logische Ebene) von Datenbankmodellen
-erklären (Kapitel 2.1-2.2)}
+erklären}
 
 \subsubsection{Anforderungsspezifikation}
 
@@ -17,7 +17,7 @@ Der konzeptuelle Entwurf wird unabhängig von der späteren Datenbank aus Anwend
 
 Aufgrund des ER-Schemas wird der Implementationsentwurf mit dem Datenmodell der eingesetzten Datenbank erstellt. Das ER-Schema wird dann in z.B. SQL-Anweisungen umgewandelt.
 
-\subsection{Mit der ER-Technik aufgrund einer beschriebenen Ausgangslage Entitäten, ein- und mehrstellige Relationen (inkl. Funktionalität), Attribute (inkl. Schlüssel) und Rollen ableiten, und diese in einem Diagramm darstellen (Kapitel 2.5-2.7.2) (Übung M)}
+\subsection{Mit der ER-Technik aufgrund einer beschriebenen Ausgangslage Entitäten, ein- und mehrstellige Relationen (inkl. Funktionalität), Attribute (inkl. Schlüssel) und Rollen ableiten, und diese in einem Diagramm darstellen}
 
 Ein ER-Modell besteht aus Entitäten und deren Beziehungen untereinander. Entitäten sind physische oder gedankliche Gegenstände, ähnlich Objekten in der OOP. Entitäten und Beziehungen können durch Attribute beschrieben werden. Ein Schlüssel ist ein Attribut das die Entität eindeutig identifiziert (z.B. Personal Nummer). Sind mehrere Schlüssel vorhanden wird ein Primärschlüssel bestimmt (ist unterstrichen). Beziehungen werden in folgende Funktionalitäten unterteilt:
 
@@ -26,11 +26,11 @@ Ein ER-Modell besteht aus Entitäten und deren Beziehungen untereinander. Entit�
 		  Eine Entität ist genau einer anderen Entität zugeordnet (z.B. ein Mann heiratet nur eine Frau). 
 	\item \textbf{1:N-Beziehung} \\
 		  Eine Entität kann mehreren oder keiner anderen Entität zugeordnet werden (z.B. eine Firma beschäftigt viele Mitarbeiter).
-	\item \textbf{1:1-Beziehung} \\
+	\item \textbf{N:M-Beziehung} \\
 		  Beliebig viele Entitäten können mit anderen Entitäten in Verbindung stehen und umgekehrt.
 \end{itemize}
 
-\subsection{Fortgeschrittene Beziehungsarten in der Modellierung anwenden (Kapitel 2.8-2.10) (Übung M)}
+\subsection{Fortgeschrittene Beziehungsarten in der Modellierung anwenden}
 
 \subsubsection{Komposition}
 
@@ -38,11 +38,11 @@ Eine Komposition ist eine Entität welche ohne eine andere nicht existieren kann
 
 \subsubsection{Generalisierung}
 
-Bei der Generalisierung kann man gemeinsame Attribute zu einem Obertyp zusammenfassen (\verb|is a|). Die Generalisierung kann mit der Vererbung in der OOP verglichen werden.
+Bei der Generalisierung kann man gemeinsame Attribute zu einem Obertyp zusammenfassen (\texttt{is a}). Die Generalisierung kann mit der Vererbung in der OOP verglichen werden.
 
 \subsubsection{Disjunkte Spezialisierung}
 
-Eine disjunkte Spezialisierung kann mit \emph{Fahrzeugen} erklärt werden. Von \emph{Fahrzeugen} gibt es zwei Unterentitäten: \emph{Fahrräder} und \emph{Autos}. Da ein \emph{Fahrrad} aber kein \emph{Auto} ist und ein \emph{Auto} kein \emph{Fahrrad} handelt es sich um eine disjunkte Spezialisierung.
+Eine disjunkte Spezialisierung kann mit \emph{Fahrzeugen} erklärt werden. Von \emph{Fahrzeugen} gibt es zwei Unterentitäten: \emph{Fahrräder} und \emph{Autos}. Da ein \emph{Fahrrad} kein \emph{Auto} ist und ein \emph{Auto} kein \emph{Fahrrad} handelt es sich um eine disjunkte Spezialisierung.
 
 \subsubsection{Vollständige Spezialisierung}
 
@@ -50,4 +50,4 @@ Bei der vollständigen Spezialisierung ist beispielsweise die Oberentität ein \
 
 \subsubsection{Aggregation}
 
-Bei der Aggregation werden unterschiedliche Entitäten zu einem Gesamtobjekt zusammengefasst (\verb|part of|). Als Beispiel kann ein Fahrrad dienen das aus einem Lenker, Rädern und einer Kette besteht.
+Bei der Aggregation werden unterschiedliche Entitäten zu einem Gesamtobjekt zusammengefasst (\texttt{part of}). Als Beispiel kann ein Fahrrad dienen das aus einem Lenker, Rädern und einer Kette besteht.

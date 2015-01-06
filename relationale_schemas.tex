@@ -1,119 +1,85 @@
 \section{Lernziel R: Ein konzeptuelles Datenmodell in ein relationales Schema umsetzen}
 
-\subsection{Den mathematischen Formalismus der Relation und dessen Zusammenhang zur Schema-Definition nennen (Kapitel 3.1)}
+\subsection{Den mathematischen Formalismus der Relation und dessen Zusammenhang zur Schema-Definition nennen}
 
 \subsubsection{Domänen}
-Wir definieren Wertebereiche, z.B. a-z, 0-9, 0/1. Diese Wertebereiche können auch Domänen genannt werden. Wir schreiben Domänen als:
-
-\begin{equation}
-    D_{n}
-\end{equation}
+Wir definieren Wertebereiche, z.B. a-z, 0-9, 0/1. Diese Wertebereiche können auch Domänen genannt werden. Wir schreiben Domänen als $D_{n}$
 
 \subsubsection{Relation}
-Beim kartesischen Produkt werden ja einfach alle Elemente der ersten Menge mit allen der zweiten Verbunden. Eine Relation \(R\) ist definiert als eine Teilmenge des kartesischen Produkts der \(n\) Domänen:
+Beim kartesischen Produkt (Kreuzprodukt) werden alle Elemente der ersten Menge mit allen der zweiten Verbunden. Eine Relation $R$ ist definiert als eine Teilmenge des kartesischen Produkts der $n$ Domänen:
 
-\begin{equation}\label{relation_def}
+\begin{equation}\label{eq:relation-definition}
     R \subseteq D_{1} \times \dots \times D_{n}
 \end{equation}
 
 \subsubsection{Schema}
-Das Schema einer Relation ist gegeben durch die \(n\) Domänen, wie in Formel \eqref{relation_def} gezeigt. Im Kontext von Datenbanken könnte man dies exemplarisch folgendermassen schreiben:
+Das Schema einer Relation ist gegeben durch die $n$ Domänen, wie in Formel \ref{eq:relation-definition} gezeigt. Im Kontext von Datenbanken könnte man dies exemplarisch folgendermassen schreiben:
 
-\begin{equation}\label{relation_db_ex}
+\begin{equation}\label{eq:relation-db-ex}
     Telefonbuch \subseteq string \times string \times integer
 \end{equation}
 
 \subsubsection{Tabelle}
 Eine Tabelle besteht aus vielen Relationen, welche alle dieselben Attribute haben. Diese Attribute müssen eindeutig benennt sein.
-Die Attribute \(string\) oder \(integer\) von Formel \eqref{relation_db_ex} müssen also einer Tabelle eindeutige Namen besitzen. Dies wird mathematisch korrekt nach folgendem Muster gemacht:
+Die Attribute $string$ oder $integer$ von der Formel \ref{eq:relation-db-ex} müssen einen eindeutigen Namen innerhalb der Tabelle besitzen. Dies wird mathematisch korrekt wie folgt dargestellt:
 
-\begin{equation}
-    Telefonbuch : \{[Name: string, Adresse: string, \underline{Telefonnummer:integer} ]\}
-\end{equation}
-Die seltsamen geschweiften und eckigen Klammern haben einen Zweck. Die eckigen Klammern \([ ]\) zeigen an, dass es sich um ein Tupel handelt, die geschweiften \(\{ \}\) dass es eine Menge ist. Es ist also eine Menge von Tupeln, wie das in Formel \eqref{relation_def} schon definiert wurde.
+\begin{center}
+Telefonbuch : \{[Name: string, Adresse: string, \underline{Telefonnummer:integer} ]\}
+\end{center}
 
-Die Unterstreichung des Attributs \(Telefonnummer\) bedeutet, dass dies der Primärschlüssel der Tabelle ist. Siehe \ref{sec:primary_key_def}.
+Die seltsamen geschweiften und eckigen Klammern haben einen Zweck. Die eckigen Klammern [ ] zeigen an, dass es sich um ein Tupel handelt, die geschweiften \{ \} dass es eine Menge ist. Es ist also eine Menge von Tupeln, wie das in Formel \ref{eq:relation-definition} schon definiert wurde. Die Unterstreichung des Attributs \(Telefonnummer\) bedeutet, dass dies der Primärschlüssel der Tabelle ist (Abschnitt \ref{sec:primary-key-def}).
 
 \subsubsection{Ausprägung}
 Die Ausprägung einer Relation ist durch die Teilmenge des Kreuzproduktes gegeben.
 
-\subsubsection{Schlüssel}\label{sec:primary_key_def}
-Die minimale Menge an Attributen, deren Werte ein Tupel innerhalb einer Re
+\subsubsection{Schlüssel}
+\label{sec:primary-key-def}
+Ein Schlüssel ist ein Attribut welches ein Tupel eindeutig identifiziert.
 
-\subsection{Entitäten, Attributen, Beziehungen und Rollen in ein relationales Schema umsetzen (Kapitel 3.2)}
-
-Wir verwenden in der Datenbanktechnik das Entity-Relationship Modell um Datenbankschemas zu modellieren.
-Offensichtlich besteht das Entity-Relationship Modell aus zwei Typen, den Entities und den Beziehungen unter den Enities. Beides kann man relational Darstellen. 
+\subsection{Entitäten, Attributen, Beziehungen und Rollen in ein relationales Schema umsetzen}
 
 \subsubsection{Entitäten}
-Das relational ausgedrückt Schema für eine Telefonbuchtabelle ist eine Formel nach dem Schema in Formel\eqref{relation_db_ex}.
+Die Entitäten werden im relationalen Schema in Tabellen umgewandelt. 
+
+\subsubsection{Attribute}
+Die Attribute der Entitäten sind die Spalten der entsprechenden Tabellen.
 
 \subsubsection{Beziehungen}
-Beziehungen zwischen Schemas können vielfältiger Natur sein. Allgemein kann eine Beziehung zwischen 2 Schemas durch eine Relation ausgedrückt werden, welche die Schlüsselattribute beider Schemas beinhaltet. Optional kann diese Beziehungsrelation weitere beschreibende Attribute beinhalten. Beispielsweise beim Kauf eines Produktes könnte die Beziehung zwischen \(Produkt\) und \(Kunde\) nebst den Schlüsselattributen \(ProduktID\) und \(KundeID\) ein beschreibendes Attribut \(Menge\) oder \(Kaufdatum\) enthalten. 
+Eine Beziehung zwischen zwei Tabellen (Entitäten) kann allgemein durch eine Beziehungstabelle ausgedrückt werden. Die Beziehungstabelle enthält die Primärschlüssel beider Tabelle als Fremdschlüssel und evtl. noch weitere Attribute. Beispielsweise beim Kauf eines Produktes könnte die Beziehung zwischen \(Produkt\) und \(Kunde\) nebst den Schlüsselattributen \(ProduktID\) und \(KundeID\) ein beschreibendes Attribut \(Menge\) oder \(Kaufdatum\) enthalten. Bei 1:1- und 1:N-Beziehungen ist nicht immer eine Tabelle nötig (siehe Abschnitt \ref{sec:schema-zusammenfassen}).
 
-\subsubsection{Beziehungsarten}
-
-\begin{itemize}
-    \item \textbf{m:n} \\
-    Studenten hören mehrere Vorlesungen und Vorlesungen werden von mehreren Studenten gehört. Die Relation \(hören\) beschreibt nun also die Beziehung zwischen den Studenten und den Vorlesungen. 
-    \begin{equation*}
-        hören : \{[\underline{VorlNr: int}, \underline{MatrNr: int}]\}
-    \end{equation*}
-
-    \item \textbf{1:n} \\
-    Vorlesungen werden immer nur von einem Professor gelesen. Für die Beschreibung der Relation der Beziehung zwischen Vorlesung und Professor reicht es also aus, als Schlüssel das Attribut \(VorlNr\) zu verwenden.
-        \begin{equation*}
-            lesen : \{[\underline{VorlNr: int}, PersNr: int]\}
-        \end{equation*}
-    \item \textbf{1:1} \\
-        Ein Professor besitzt ein Büro auf dem Campus. Ein Büro gehört auch nur einem Professor.
-        \begin{equation}
-            Dienstzimmer : \{[\underline{PersNr}, RaumNr]\}
-        \end{equation}
-        Wobei es einerlei ist, ob man nun \verb|PersNr| als Schlüssel benützt oder \verb|RaumNr|.
-\end{itemize}
-
-\subsubsection{Attributsnamen}
-Die Bennennung der Attribute muss in allen Relationen eindeutig sein. Wenn zwei Entities zueinander in Beziehung gesetzt werden sollen, deren Schlüsselattribute gleich heissen, müssen diese also noch umbenannt werden.
-\subsection{Relationale Schemas zusammenfassen (insbesondere 1:N; 1:1, Generalisierung, schwache Entitäten) (Kapitel 3.3)}
-
-\subsubsection{Grundregel}\label{sec:ret_schema_grundregel}
-
-    \begin{center}
-        \framebox{\textbf{Relationen mit gleichem Schlüssel können zusammengefasst werden.}}
-    \end{center}
+\subsection{Relationale Schemas zusammenfassen (insbesondere 1:N; 1:1, Generalisierung, schwache Entitäten)}
+\label{sec:schema-zusammenfassen}
 
 \subsubsection{1:N Beziehungen zusammenfassen}
+\label{sec:1-n-zusammenfassen}
 
-Kurz gefasst: Für 1:n Beziehungen schreibt man den Schlüssel der n-Tabelle als Fremdschlüssel in die 1-Tabelle.
+Für 1:n Beziehungen schreibt man den Schlüssel der 1-Tabelle (\emph{Professoren}) als Fremdschlüssel in die n-Tabelle (\emph{Vorlesungen}). Der Fremdschlüssel in der Tabelle \emph{Vorlesungen} ist \emph{gelesenVon}.
 
-Für die Relationen:
-
-\begin{equation*}
-    Vorlesungen : \{[\underline{VorlNr: int}, Titel: string, SWS, int]\}
-\end{equation*}
-\begin{equation*}
-    Professoren : \{[\underline{PersNr: int}, Name: string, Rang: string, Raum: int]\}
-\end{equation*}
-\begin{equation*}
-    lesen : \{[\underline{VorlNr: int}, PersNr: int]\}
-\end{equation*}
-
-ist es also ersichtlich, dass \verb"Vorlesungen" sowie \verb"lesen" den gleichen Schlüssel haben. Daher kann man die beiden Relationen zu einer zusammenfassen:
-
-\begin{equation*}
-    Vorlesungen : \{[\underline{VorlNr: int}, Titel: string, SWS, int, gelesenVon: int]\}
-\end{equation*}
+\begin{center}
+Professoren : \{[\underline{PersNr: int}, Name: string, Rang: string, Raum: int]\} \\
+Vorlesungen : \{[\underline{VorlNr: int}, Titel: string, SWS, int, \emph{gelesenVon: int}]\} \\
+\end{center}
 
 \subsubsection{1:1 Beziehungen zusammenfassen}
 
-1:1 Beziehungen können beliebig zusammengefasst werden, sofern die Grundregel (siehe Kapitel \ref{sec:ret_schema_grundregel}) nicht verletzt wird. Bitte auch Hinweis im Kapitel \ref{sec:null-werte-vermeiden} beachten.
+Eine 1:1-Beziehung kann auf die gleiche Weise wie in Abschnitt \ref{sec:1-n-zusammenfassen} beschrieben zusammengefasst werden. Bei 1:N- und 1:1-Beziehungen sollten \texttt{NULL} vermieden werden. Als Beispiel sei genannt, dass z.B. jedes Land einen Präsidenten hat, und jeder Bürger kann nur Präsident von einem Land sein. Allerdings ist nicht jeder Bürger Präsident. Daher würde es keinen Sinn machen, bei der Tabelle \emph{Bürger} eine Spalte \emph{istPräsidentVon} einzufügen. Diese Spalte würde in die Tabelle \emph{Land} kommen.
 
-\subsubsection{Vermeidung Null-Werte}\label{sec:null-werte-vermeiden}
-Bei 1:n und 1:1 Beziehungen kann es sein, dass die Entitäten die Bezeihung gar nicht eingehen. Daher soll das relationale Schema so konstruiert werden, sodass möglichst keine Null-Werte in Tupeln auftreten.
+\subsubsection{Generalisierung}
 
-Als Beispiel sei genannt, dass z.B. jedes Land einen Präsidenten hat, und jeder Bürger kann nur Präsident von einem Land sein. Allerdings ist ja nicht jeder Bürger Präsident, daher würde es keinen Sinn machen, bei der Tabelle \verb"Bürger" eine Spalte \verb"istPräsidentVon" einzufügen.
+Eine Generalisierung (Vererbung) kann man darstellen indem der Primärschlüssel der Obertabelle als Fremdschlüssel in die Untertabelle eingetragen wird. Das nachfolgende Beispiel zeigt eine simple Umsetzung, wobei die Obertabelle \emph{Angestellte} zwei Untertabellen hat.
 
-\subsection{Auf der Basis eines konzeptuellen Datenmodells ein relationales Schema in einem CASE-Werkzeug modellieren (Übung R)}
+\begin{center}
+Angestellte : \{[\underline{PersNr}, Name]\} \\
+Professoren : \{[\underline{PersNr}, Rang, Raum]\} \\
+Vorlesungen : \{[\underline{PersNr},Fachgebiet]\}
+\end{center}
 
-Dies sollte nun problemlos möglich sein.
+Das relationale Modell bietet sonst keine Möglichkeit die Vererbung darzustellen.
+
+\subsubsection{Schwache Entitäten}
+
+Schwache Entitäten können ohne eine starke Entität nicht existieren (z.B. Raum in Gebäude). Die schwachen Entitäten besitzen einen lokalen Schlüssel. Der lokale Schlüssel ist der Primärschlüssel der starken Entität (1:N-Beziehung wobei 1 die starke Entität ist). 
+
+\subsection{Auf der Basis eines konzeptuellen Datenmodells ein relationales Schema in einem CASE-Werkzeug modellieren}
+
+MySQL-Workbench ist ein Beispiel für ein \ac{CASE}-Werkzeug.

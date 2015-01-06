@@ -1,8 +1,8 @@
 \section{Lernziel TR: Transaktionsmanagement erklären und anwenden}
 
-\subsection{Den Begriff «Transaktion» umschreiben (4.3.1)}
-Eine Transaktion ist eine Folge von Operationen, welche die Datenbank nach Ausführung in einem konistenten Zustand belassen.
-Sie muss daher die Eigenschaften atomar, konsitent, isoliert und dauerhaft haben (ACID).
+\subsection{Den Begriff «Transaktion» umschreiben}
+Eine Transaktion ist eine Folge von Operationen, welche die Datenbank nach Ausführung in einem konsistenten Zustand belassen.
+Sie muss daher die Eigenschaften atomar, konsistent, isoliert und dauerhaft haben (ACID).
 Transaktionen haben zwei Ziele:
 
 \begin{itemize}
@@ -12,7 +12,7 @@ Transaktionen haben zwei Ziele:
   Konsistenz im Mehrbenutzerbetrieb
 \end{itemize}
 
-\subsection{Das ACID-Prinzip: Atomarität, die Konsistenz, die Isolation und die Dauerhaftigkeit von Transaktionen erläutern (4.3.1)}
+\subsection{Das ACID-Prinzip: Atomarität, die Konsistenz, die Isolation und die Dauerhaftigkeit von Transaktionen erläutern}
 \begin{itemize}
   \item \textbf{Atomarität} \\
   Eine Transaktion wird entweder ganz oder gar nicht durchgeführt. Bei Erfolg gibt es ein \emph{COMMIT} aller Aktionen, bei einem Fehler ein \emph{ROLLBACK} aller Aktionen.
@@ -24,10 +24,11 @@ Transaktionen haben zwei Ziele:
   Das Datenbanksystem muss ihren Zustand in jedem Fall beibehalten können, also auch im Fall von Programmfehlern, Systemabstürzen oder Fehler bei externen Speichersystemen. Eine korrekt abgeschlossene Transaktion muss also in jedem Fall erhalten bleiben.
 \end{itemize}
 
-\subsection{Erklären, wie Synchronisierung der \emph{Isolierbarkeit} von Transaktionen dient (4.3.2)}
-Ein Plan eines Ablaufs von gleichzeitig ablaufenden Transaktionen ist korrekt synchronisiert, wenn es eine serielle Ausführung gibt, welche denselben Datenbankzustand erzeugt. Der Scheduler einer Datenbank erzeugt einen solchen Ablaufplan von parallell ablaufenden Transaktionen und erzeugt dabei einen Präzedenzgraphen. Dieser Graph dient dazu, Abhängigkeiten zwischen Transaktionen aufzuzeigen. Wenn in diesem Graph keine zyklischen Abhängigkeiten vorkommen, dann ist diese Menge von Transaktionen serialisierbar. Daher hilft die Synchronisierung dabei, die Transaktionen untereinander zu isolieren.
+\subsection{Erklären, wie Synchronisierung der \emph{Isolierbarkeit} von Transaktionen dient}
+Ein Plan eines Ablaufs von gleichzeitig ablaufenden Transaktionen ist korrekt synchronisiert, wenn es eine serielle Ausführung gibt, welche denselben Datenbankzustand erzeugt. Der Scheduler einer Datenbank erzeugt einen solchen Ablaufplan von parallel ablaufenden Transaktionen und erzeugt dabei einen Präzedenzgraphen. Dieser Graph dient dazu, Abhängigkeiten zwischen Transaktionen aufzuzeigen. Wenn in diesem Graph keine zyklischen Abhängigkeiten vorkommen, dann ist diese Menge von Transaktionen serialisierbar. Daher hilft die Synchronisierung dabei, die Transaktionen untereinander zu isolieren.
 
-\subsection{Den Unterschied zwischen pessimistischen und optimistischen Verfahren der Serialisierung darstellen (4.3.3 + 4.3.4)}
+\subsection{Den Unterschied zwischen pessimistischen und optimistischen Verfahren der Serialisierung darstellen}
+
 \subsubsection{Pessimistische Verfahren}
 Die Transaktion sperrt bei diesem Verfahren grundsätzlich alle zu lesenen / verändernden Objekte. Andere Transaktionen werden abgebrochen, wenn sie auf das Objekt zugreifen möchten, oder müssen warten bis diese Transaktion fertig ist.
 
@@ -38,6 +39,7 @@ Knackpunkte sind:
   \item \textbf{Nichtserialisierbare Abläufe}
   Sperren werden zu früh oder leichtsinnig zurückgegeben.
 \end{itemize}
+
 Zur Lösung dieser Probleme wird ein \textbf{\emph{Zweiphasen-Sperrprotokoll}} benutzt. Dieses Protokoll verbietet es, eine Sperre zurückzugeben, und dann eine weitere Sperre anzufordern. Deswegen sammelt eine Transaktion im Verlaufe ihrer Operationen einen grossen Haufen von Sperren (\emph{Wachstumsphase}) und gibt diese erst gegen Ende der Transaktion dann nach und nach wieder zurück (\emph{Schrumpfungsphase}).
 
 \mygraphics{0.4\textwidth}{fig/zweiphasen.png}{Zweiphasen Sperrprotokoll}{2phasen}
@@ -51,7 +53,7 @@ Bei diesem Verfahren werden keine Sperren gesetzt, unter der Annahme, dass diese
 
 Nach dem Abarbeiten der Transaktion kommt diese in eine Validierungsphase. Dort wird geprüft, ob Konflikte aufgetreten sind. Grundsätzlich dürfen die von einer Transaktion gelesenen Werte nicht von einer anderen Transaktion inzwischen verändert wurden.
 
-\subsection{Beschreiben, wie die Recovery der Dauerhaftigkeit von Transaktionen dient (4.5)}
+\subsection{Beschreiben, wie die Recovery der Dauerhaftigkeit von Transaktionen dient}
 
 Beim Betreiben einer Datenbank können diverse Fehler auftreten (Systemabstürze etc.). Um dies zu beheben benötigt man folgendes:
 
@@ -59,9 +61,10 @@ Der Start einer Transaktion wird in einer Logdatei vermerkt. Bevor jetzt ein Obj
 
 Wenn im Fehlerfall die Transaktion noch nicht beendet wurde (im Log also noch kein \emph{EOT} vermerkt ist), dann werden die veränderten Objekte Transaktion mit Hilfe den Log wiederhergestellt.
 
-\subsection{Transaktionen mit verschiedenen Isolation Levels auf einem Datenbankserver ausführen (Übung TR)}
+\subsection{Transaktionen mit verschiedenen Isolation Levels auf einem Datenbankserver ausführen}
 
 \subsubsection{Isolationslevels}
+
 \begin{itemize}
   \item \textbf{Read Uncommitted} \\
   Das ist die niedrigste Stufe der Transaktionssicherheit.  Alle Anomalien können auftreten.
@@ -73,8 +76,8 @@ Wenn im Fehlerfall die Transaktion noch nicht beendet wurde (im Log also noch ke
   Das ist die höchste Stufe der Isolation. Keine Anomalien treten innerhalb der Transaktionen auf.
 \end{itemize}
 
-
 \subsubsection{Anomalien}
+
 \begin{itemize}
   \item \textbf{Dirty Reads} \\
   Die Transaktion liest Daten, die von einer anderen Transaktion noch gar nicht \emph{committed} wurden.
@@ -87,11 +90,10 @@ Wenn im Fehlerfall die Transaktion noch nicht beendet wurde (im Log also noch ke
 
 \subsubsection{Transaktionen in SQL}
 \begin{lstlisting}[caption={Transaktionen in SQL}]
-    SET TRANSACTION ISOLATION LEVEL LEVEL READ UNCOMMITTED;
-    START TRANSACTION;
-        /*SQL Befehle*/
-    
-    /*Am Schluss immer*/
-    COMMIT;
-    /*Oder ROLLBACK; */
+SET TRANSACTION ISOLATION LEVEL LEVEL READ UNCOMMITTED;
+START TRANSACTION;
+-- SQL Befehle
+-- Am Schluss immer
+COMMIT;
+-- oder ROLLBACK;
 \end{lstlisting}

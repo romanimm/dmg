@@ -1,6 +1,7 @@
 \section{Lernziel DI: Semantische Integrität einer Datenbank sicherstellen}
 
-\subsection{Den Begriff der referentiellen Integrität erklären (Kapitel 5.1)}
+\subsection{Den Begriff der referentiellen Integrität erklären}
+
 \subsubsection{Referentielle Integrität}
 Ein Primärschlüssel einer Tabelle \(R\) ist in einer anderen Tabelle \(S\) als \(a\) enthalten. Man nennt \(a\) einen Fremdschlüssel wenn folgende zwei Bedingungen erfüllt sind:
 
@@ -8,9 +9,10 @@ Ein Primärschlüssel einer Tabelle \(R\) ist in einer anderen Tabelle \(S\) als
   \item \(a\) ist entweder immer \texttt{null} oder überhaupt nie \texttt{null}.
   \item Wenn \(a\) nicht \texttt{null} ist, dann muss jeder Wert von \texttt{a} in der anderen Tabelle ebenfalls vorkommen.
 \end{itemize}
-Wenn diese Bedingungen gegegeben sind, nennt man das eine \emph{referentielle Integrität}. 
 
-Ein Vorteil der Integritätsprüfung auf der Datenbank ist der, dass man sie nur einaml zu implementieren braucht. Bei neuen Anforderungen muss die Applikationssoftware nicht angepasst werden, da sie zentral formuliert wird. (Anmerk. des Autors: Wohl kaum).
+Wenn diese Bedingungen gegeben sind, nennt man das eine \emph{referentielle Integrität}. 
+
+Ein Vorteil der Integritätsprüfung auf der Datenbank ist der, dass man sie nur einmal zu implementieren braucht. Bei neuen Anforderungen muss die Applikationssoftware nicht angepasst werden, da sie zentral formuliert wird. (Anmerk. des Autors: Wohl kaum).
 
 \subsubsection{Arten der Integritätsbedingungen}
 \begin{itemize}
@@ -22,25 +24,24 @@ Ein Vorteil der Integritätsprüfung auf der Datenbank ist der, dass man sie nur
     Ist durch das Schema der Datenbank vorgegeben, beispielsweise durch die referentielle Integrität oder Attributsdomänen (z.B. max 64 chars).
 \end{itemize}
 
-
-\subsection{Referentielle Integritätsbedingungen in SQL formulieren (Kap. 5.3; Übung DI)}
+\subsection{Referentielle Integritätsbedingungen in SQL formulieren}
 
 \subsubsection{Bei Erstellung der Tabelle}
 \begin{lstlisting}[caption={Referentielle Integrität bei Erstellung}]
-    CREATE TABLE Bestellungen
-    (
-        BestellungID INT NOT NULL PRIMARY KEY,
-        KundenID INT,
-        CONSTRAINT kunde_kauft FOREIGN KEY (KundenID) REFERENCES Kunden (KundenID)
-        ON UPDATE CASCADE
-    );
+CREATE TABLE Bestellungen
+(
+    BestellungID INT NOT NULL PRIMARY KEY,
+    KundenID INT,
+    CONSTRAINT kunde_kauft FOREIGN KEY (KundenID) REFERENCES Kunden (KundenID)
+    ON UPDATE CASCADE
+);
 \end{lstlisting}
 
 \subsubsection{Nach der Erstellung der Tabelle}
 \begin{lstlisting}[caption={Referentielle Integrität Update}]
-    ALTER TABLE Bestellungen
-    ADD CONSTRAINT kunde_kauft FOREIGN KEY (KundenID) REFRENCES Kunden
-    ON UPDATE CASCADE
+ALTER TABLE Bestellungen
+ADD CONSTRAINT kunde_kauft FOREIGN KEY (KundenID) REFRENCES Kunden
+ON UPDATE CASCADE
 \end{lstlisting}
 
 Eigentlich ganz easy.
@@ -50,24 +51,27 @@ Was passiert wenn ein Fremdschlüssel verändert wird oder gar gelöscht wird? D
 
 \begin{itemize}
   \item \textbf{ON UPDATE} \\
-  Beim Verändern des Fremschlüssels
+  Was passiert beim Verändern des Fremdschlüssels
   \item \textbf{ON DELETE} \\
-  Beim Löschen des Tuples
+  Was passiert beim Löschen des Tupels
 \end{itemize}
+
+\noindent
 Es können folgende Aktionen definiert werden:
+
 \begin{itemize}
   \item \textbf{CASACDE} \\
   Führt die Änderung in den referenzierenden Tabellen weiter. Vorsicht! Kanne einen ganzen "Rattenschwanz" an Änderungen nach sich ziehen.
   \item \textbf{SET NULL} \\
-  Kann beim Löschen eingsetzt werden, setzt die referenzierenden Fremschlüssel auf \texttt{NULL} wenn ein referenziertes Tupel gelöscht wird.
+  Kann beim Löschen eingesetzt werden, setzt die referenzierenden Fremdschlüssel auf \texttt{NULL} wenn ein referenziertes Tupel gelöscht wird.
   \item \textbf{RESTRICT} \\
   Verhindert die Änderung / Löschung.
 \end{itemize}
 
+\subsection{Statische Integritätsbedingungen formulieren}
+Statische Integritätsbedingungen erfasst man mit dem \texttt{CHECK}-Operator. Dabei können ganz beliebige Operationen ausgeführt werden, es wird am Schluss einfach überprüft, ob die angegebene Operation \texttt{TRUE} oder \texttt{UNKNOWN} zurückgibt - in beiden Fällen wird die Aktualisierung / der neue Datensatz zugelassen.
 
-\subsection{Statische Integritätsbedingungen formulieren (Kap. 5.4, 5.6)}
-Statische Integritätsbedingungen erfasst man mit dem \texttt{check}-Operator. Dabei können ganz beliebige Operationen ausgeführt werden, es wird am Schluss einfach überprüft, ob die angegebene Operation \texttt{true} oder \texttt{unknown} zurückgibt - in beiden Fällen wird die Aktualisierung / der neue Datensatz zugelassen.
-\begin{lstlisting}[caption={Beispiel mit check}]
+\begin{lstlisting}[caption={Beispiel mit CHECK}]
 CREATE TABLE Studenten
 (
     MatrNr    INTEGER PRIMARY KEY,
@@ -76,22 +80,11 @@ CREATE TABLE Studenten
 );
 \end{lstlisting}
 
-Man kann auch solche checks über mehrere Spalten machen mit komplexeren Abfragen und diese auch noch benennen. Dies macht man so;
+\subsection{Den Begriff der Trigger erklären}
+Trigger sind Prozeduren, die zu vordefinierten Zeitpunkten auf der Datenbank ausgeführt werden, analog zu den Stored Procedures. Mit Triggern können ebenfalls Integritätsbedingungen forciert und überprüft werden.
 
-\begin{lstlisting}[caption={Beispiel mit check und Constraint}]
-CREATE TABLE Studenten
-(
-    MatrNr    INTEGER PRIMARY KEY,
-    Name      VARCHAR(30) NOT NULL,
-    Semester  INTEGER
-    CONSTRAINT test_bedingung CHECK (...SQL...)
-);
-\end{lstlisting}
+Mögliche Aktionen, die ein Trigger auslösen:
 
-\subsection{Den Begriff der Trigger erklären (Kap. 5.7)}
-Trigger sind Prozeduren, die zu vordefinierten Zeitpunkten auf der Datenbank ausgeführt werden, analog zu den Stored Procedures. Mit Triggern können ebenefalls Integritätsbedingungen forciert und überprüft werden.
-
-Mögliche Aktionen, die ein Trigger auslösen;
 \begin{itemize}
   \item insert
   \item update
@@ -100,7 +93,7 @@ Mögliche Aktionen, die ein Trigger auslösen;
 
 Trigger können vor und/oder nach diesen Aktionen ausgeführt werden (\texttt{before} und \texttt{after}). In den Prozeduren selbst kann auf die eingefügten / geänderten (neu und alt!) / gelöschten Tupeln Bezug genommen werden sowie können diese auch verändert werden.
 
-\subsection{Trigger auf der Datenbank implementieren (Kap. 5.7; Übung DI)}
+\subsection{Trigger auf der Datenbank implementieren}
 
 \begin{lstlisting}[caption={Trigger Beispiel SQL}]
 CREATE TRIGGER keineDegradierung

@@ -1,6 +1,6 @@
 \section{Lernziel DW: Data Warehousing erklären}
 
-\subsection{Den Begriff des Data Warehouse definieren (17.2)}
+\subsection{Den Begriff des Data Warehouse definieren}
 
 \subsubsection{Subject Orientation (Themenorientierung)}
 
@@ -18,7 +18,7 @@ Daten werden dauerhaft (nicht-flüchtig) gespeichert.
 
 Analysen über zeitliche Veränderungen und Entwicklungen sollen im Data Warehouse ermöglicht werden. Daher ist die langfristige Speicherung der Daten im Data-Warehouse nötig.
 
-\subsection{OLAP versus OLTP unterscheiden (17.2.1)}
+\subsection{OLAP versus OLTP unterscheiden}
 
 \ac{OLTP} Datenbanken realisieren das Tagesgeschäft und operieren mit dem aktuellsten Datenbestand. \ac{OLAP} Datenbanken arbeiten mit grösseren, historischen Daten um z.B. Rückschlüsse auf die Entwicklung eines Unternehmens zu nehmen. Die beiden Datenbanktypen werden nicht auf demselben Datenbestand ausgeführt. Tabelle \ref{tab:oltp-olap} zeigt eine Gegenüberstellung.
 
@@ -35,12 +35,11 @@ Analysen über zeitliche Veränderungen und Entwicklungen sollen im Data Warehou
 		\hline Anzahl Benutzer 	& viel 					& wenige 										\\ 
 		\hline 
 	\end{tabular}
-	\label{tab:oltp-olap}
 	\caption{OLTP versus OLAP}
+	\label{tab:oltp-olap}
 \end{table}
 
-
-\subsection{Multidimensionale Daten verstehen (17.2.3)}
+\subsection{Multidimensionale Daten verstehen}
 
 In der Data Warehouse Theorie werden Daten oft in Form eines mehrdimensionalen Würfels dargestellt (Abbildung \ref{fig:mehrdimensionaler-wuerfel}).
 
@@ -52,7 +51,7 @@ In SQL kann diese Gruppierung mit \verb|group by| erstellt werden. Werden mehr A
 
 Beim sogenannten \emph{slicing} werden Scheiben aus dem Datenwürfel ausgeschnitten. Beim sogenannten \emph{dicing} werden mehre \emph{slicing}-Vorgänge gleichzeitig vorgenommen und somit wird ein kleinerer Würfel erzeugt.
 
-\subsection{Den Star Join anwenden (Übung DW, 17.2.2)}
+\subsection{Den Star Join anwenden}
 
 Das Sternschema besteht aus einer Faktentabelle und mehreren Dimensionstabellen, welche über Fremdschlüssel in der Faktentabelle eingetragen sind. Die Dimensionstabellen sind nicht normalisiert.
 

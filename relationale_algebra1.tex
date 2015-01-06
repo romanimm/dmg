@@ -18,24 +18,45 @@ Eine \(n\)-stellige Relation \(R\) ist eine Teilmenge des kartesischen Produkts 
 \( R \subseteq A_{1} \times \dotsb \times A_{n}\)mit \(A_1 \times \dotsb \times A_n = \{(a_1, \dotsc, a_n) \mid a_1 \in A_1, \dotsc, a_n \in A_n\}\).
 
 \subsection{Der Student versteht den Unterschied zwischen Relationen und Funktionen}
-Relationen sind allgemeinere Funktionen. Wenn wir zwei Mengen haben, \(A\) und \(B\). Von der Menge \(A\) jedes Element genau ein Element aus \(B\) hat, dann ist es eine Funktion und auch eine Relation. 
+Relationen sind allgemeinere Funktionen. Die Abbildung \ref{eq:relation-definition} erklärt den Unterschied anhand von zwei Zahlenmengen.
 
-\mygraphics{0.18\textwidth}{fig/funktion}{Beispiel für eine Funktion}{funktion}
-
-Sollte aber ein Element aus der Menge \(A\) mehr als ein Element in der Menge \(B\) zugeordnet haben, dann ist es eine Relation, keine Funktion.
-
-\mygraphics{0.18\textwidth}{fig/relation}{Beispiel für eine Relation}{relation}
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[b]{0.27\textwidth}
+		\includegraphics[width=\textwidth]{fig/funktion.png}
+		\caption{Beispiel für eine Funktion}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/relation.png}
+		\caption{Beispiel für eine Relation}
+	\end{subfigure}
+	\caption{Relation vs. Funktion}
+	\label{fig:relation-funktion}
+\end{figure} 
 
 \subsection{Der Student kann Relationen als Graphen darstellen}
 
-\subsubsection{Knoten und Kanten}
-Wenn die Menge beider Teile der Funktionen dieselbe ist, kann man jedes Element der Menge als Knoten und die Kanten zwischen den Knoten stellen die Relationen zwischen denen Elementen dar. Siehe Abbildung \ref{fig:relation_knoten_kanten}
-
-\mygraphics{0.3\textwidth}{fig/knoten_kanten}{Relation mit Knoten und Kanten}{relation_knoten_kanten}
+\subsubsection{Graph}
+Wenn die Menge beider Teile der Funktionen dieselbe ist, kann man jedes Element der Menge als Knoten und die Kanten zwischen den Knoten stellen die Relationen zwischen denen Elementen dar. Siehe Abbildung \ref{fig:relation-knoten-kanten}.
 
 \subsubsection{Koordinatensystem}
-Die einzelnen Relationen können allerdings auch als Punkte in einem Koordinatensystem eingetragen werden. Dann können auch die Relationsmengen unterschiedlich sein. Siehe Abbildung \ref{fig:relation_koordinatensystem}.
-\mygraphics{0.5\textwidth}{fig/koordinatensystem}{Relation im Koordinatensystem}{relation_koordinatensystem}
+Die einzelnen Relationen können allerdings auch als Punkte in einem Koordinatensystem eingetragen werden. Dann können auch die Relationsmengen unterschiedlich sein. Siehe Abbildung \ref{fig:relation-koordinatensystem}.
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[b]{0.27\textwidth}
+		\includegraphics[width=\textwidth]{fig/knoten_kanten.png}
+		\caption{Graph}
+		\label{fig:relation-knoten-kanten}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{fig/koordinatensystem.png}
+		\caption{Koordinatensystem}
+		\label{fig:relation-koordinatensystem}
+	\end{subfigure}
+	\caption{Relation darstellen}
+	\label{fig:relation-funktion}
+\end{figure} 
 
 \subsection{Der Student kann reflexive, symmetrische und transitive Relationen identifizieren}
 
@@ -50,7 +71,7 @@ Eine Symmetrische Relation besagt, dass zu jeder Relation eine Relation in der G
 \end{equation*}
 
 \subsubsection{Transitive Relation}
-Eine Relation ist transitiv, wenn es z.B. eine Relation (1,2) und eine Relation (2,3) gibt, dann muss es auch (1,3) geben. Abbildung \ref{fig:relation_knoten_kanten} zeigt eine solche transitive Relation. Formal ausgedrückt:
+Eine Relation ist transitiv, wenn es z.B. eine Relation (1,2) und eine Relation (2,3) gibt, dann muss es auch (1,3) geben. Abbildung \ref{fig:relation-knoten-kanten} zeigt eine solche transitive Relation. Formal ausgedrückt:
 
 \begin{equation*}
   \forall x,y,z \in A ((x,y) \in R \wedge (y,z) \in R \to (x,z) \in R)
