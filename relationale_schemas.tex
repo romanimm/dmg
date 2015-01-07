@@ -11,7 +11,8 @@ Beim kartesischen Produkt (Kreuzprodukt) werden alle Elemente der ersten Menge m
 \begin{equation}\label{eq:relation-definition}
     R \subseteq D_{1} \times \dots \times D_{n}
 \end{equation}
-Ein anderes Wort für eine Relation wäre in der Datenbankwelt eine Tabelle. 
+Elemente dieser Relation werden als Tupel bezeichnet, was in der Datenbankwelt eine Zeile/Row wäre.
+Ein anderes Wort für eine Relation wäre in der Datenbankwelt also eine Tabelle. 
 \subsubsection{Schema}
 Das Schema einer Relation ist gegeben durch die $n$ Domänen, wie in Formel \ref{eq:relation-definition} gezeigt. Im Kontext von Datenbanken könnte man dies exemplarisch folgendermassen schreiben:
 
@@ -20,8 +21,8 @@ Das Schema einer Relation ist gegeben durch die $n$ Domänen, wie in Formel \ref
 \end{equation}
 
 \subsubsection{Tabelle}
-Eine Tabelle besteht aus vielen Tupeln, welche alle dieselben Attribute haben. Diese Attribute müssen eindeutig benennt sein.
-Die Attribute $string$ oder $integer$ von der Formel \ref{eq:relation-db-ex} müssen einen eindeutigen Namen innerhalb der Tabelle besitzen. Dies wird mathematisch korrekt wie folgt dargestellt:
+Eigentlich ist eine Tabelle nichts anderes als eine Relation. Eine Tabelle besteht aus beliebig vielen Tupeln, welche alle dieselben Attribute haben. Anders als bei Tuplen müssen in einer Tabelle diese Attribute eindeutig benennt sein.
+Die Attribute $string$ oder $integer$ von der Formel \ref{eq:relation-db-ex} müssen also einen eindeutigen Namen innerhalb der Tabelle besitzen. Dies wird mathematisch korrekt wie folgt dargestellt:
 
 \begin{center}
 Telefonbuch : \{[Name: string, Adresse: string, \underline{Telefonnummer:integer} ]\}

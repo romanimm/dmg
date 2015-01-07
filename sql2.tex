@@ -61,7 +61,7 @@ Mit dem vorangestellten \texttt{NOT} kann das Gegenteil gezeigt, werden, also da
 
 \subsection{Quantifizierte Anfragen (exists)}
 
-\texttt{exists} überprüft, ob eine Unterabfrage leer ist oder nicht. Wenn die Menge leer ist liefert \texttt{exists} \texttt{false} und sonst \texttt{true}.
+\texttt{exists} überprüft, ob eine Unterabfrage leer ist oder nicht. Wenn die Menge leer ist liefert \texttt{exists} \texttt{false} und sonst \texttt{true}. Die Unterabfrage verwendet meist eine Bedingung mit einem Attribut von der Oberabfrage. (Sonst würde \texttt{exists} ja immer \texttt{true} oder \texttt{false} zurückliefern).
 
 \begin{lstlisting}[caption={SQL Beispiel mit Exists},label=lst:bsp_exists]
 SELECT Name FROM Professoren
@@ -72,7 +72,7 @@ Diese Abfrage gibt alle Namen der Professoren zurück welche eine Vorlesung lese
 
 \subsection{Nullwerte (null)}
 
-\texttt{null} bedeutet in SQL, dass der Wert unbekannt ist, das heisst er ist nicht \texttt{1} oder \texttt{"Haus des Nikolaus"} oder gar \texttt{0}, er ist einfach unbekannt. Folgende Regeln erklären das genauer:
+\texttt{null} bedeutet in SQL, dass der Wert unbekannt ist, das heisst er ist nicht \texttt{1} oder \texttt{"Haus des Nikolaus"} oder gar \texttt{0}, er ist einfach unbekannt. Folgende Regeln zeigen Folgen daraus:
 
 \begin{itemize}
   \item \textbf{Arithmetische Ausdrücke} \\
@@ -104,7 +104,7 @@ SELECT * FROM Studenten WHERE Semster BETWEEN 1 AND 4;
 Siehe Abschnitt \ref{sec:in_operator}.
 
 \subsubsection{like}
-Der \texttt{like}-Operator wird häufig in Verbindung mit Suchen von Text eingesetzt. Dabei können Platzhalter eingesetzt werden für unbekannte Teiltexte.
+Der \texttt{like}-Operator wird zum Suchen von Text eingesetzt. Dabei können Platzhalter eingesetzt werden für unbekannte Teiltexte.
 \begin{itemize}
   \item \textbf{\%} Beliebig viele Zeichen
   \item \textbf{\underline {{ }{ }}} Genau ein Zeichen
@@ -184,7 +184,7 @@ Hier werden einfach der \texttt{left outer join} und der \texttt{right outer joi
 SELECT * FROM Kunden FULL JOIN Produkte;
 \end{lstlisting}
 
-Hinweis: dies geht auf dem MySQL Server nicht. Left und Right Join müssen mit einem \texttt{UNION} verknüpft werden.
+Hinweis: dies geht auf dem MySQL Server nicht. Left und Right Join müssen mit einem \texttt{UNION} verknüpft werden um ein Full Join zu erhalten.
 
 \subsection{Veränderungen am Datenbestand (update, delete)}
 
@@ -209,7 +209,7 @@ DELETE FROM Studenten WHERE Semester > 10
 \end{lstlisting}
 
 \subsection{Sichten (create view)}
-Sichten sind virtuelle Relationen und zeigen darin einen Ausschnitt des gesamten Modells. 
+Sichten sind virtuelle Relationen / Tabellen und zeigen darin einen beliebigen Ausschnitt des gesamten Modells. 
 
 \begin{lstlisting}[caption={Beispiel für eine Sicht}]
 CREATE VIEW PrüferHärte(Name, HärteGrad) AS (   
