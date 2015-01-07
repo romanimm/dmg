@@ -4,11 +4,11 @@
 
 \subsubsection{Subject Orientation (Themenorientierung)}
 
-Die Auswahl der in das Data-Warehouse zu übernehmenden Daten geschieht nach bestimmten Datenobjekten (Produkt, Kunde, Firma usw.), die für die Analysen von Kennzahlen für Entscheidungsprozesse relevant sind, nicht hingegen nach operativen Prozessen (Fertigung, Lager usw.)
+Die Auswahl der in das Data Warehouse zu übernehmenden Daten geschieht nach bestimmten Datenobjekten (Produkt, Kunde, Firma usw.), die für die Analysen von Kennzahlen für Entscheidungsprozesse relevant sind, nicht hingegen nach operativen Prozessen (Fertigung, Lager usw.)
 
 \subsubsection{Integration ETL (Vereinheitlichung)}
 
-Das Data Warehouse besitzt meist Daten aus mehreren operativen Datenbanken. Der Datenbestand des Data Warehouses muss periodisch aufgefrischt werden. Die Daten werden auch verdichtet und in ein einheitliches Format gebracht bevor sie im Data Warehouse abgelegt werden. Diese Vorgänge werden als \ac{ETL} bezeichnet.
+Das Data Warehouse besitzt meist Daten aus mehreren operativen Datenbanken. Der Datenbestand des Data Warehouses muss periodisch aufgefrischt werden. Die Daten werden zusätzlich verdichtet und in ein einheitliches Format gebracht bevor sie im Data Warehouse abgelegt werden. Diese Vorgänge werden als \ac{ETL} bezeichnet.
 
 \subsubsection{Non-Volatile (Beständigkeit)}
 
@@ -45,9 +45,9 @@ In der Data Warehouse Theorie werden Daten oft in Form eines mehrdimensionalen W
 
 \mygraphics{0.4\textwidth}{fig/mehrdimensionaler_wuerfel.png}{Mehrdimensionaler Würfel}{mehrdimensionaler-wuerfel}
 
-Die Information die man überprüfen möchte ist z.B. der Umsatz verschiedener Produkte. Die Kanten des Würfel zeigen die verschiedenen Möglichkeiten auf nach denen der Umsatz gruppiert werden kann (z.B. Umsatz von Produkt xy im Gebiet zw im Jahr 2014). 
+Die Information die man überprüfen möchte ist z.B. der Umsatz verschiedener Produkte. Die Kanten des Würfel zeigen die verschiedenen Möglichkeiten auf nach denen der Umsatz gruppiert werden kann (z.B. Umsatz von Produkt xy im Gebiet wz im Jahr 2014). 
 
-In SQL kann diese Gruppierung mit \verb|group by| erstellt werden. Werden mehr Attribute in \verb|group by| aufgenommen, werden die Daten weniger stark verdichtet (\emph{drill down}) d.h. es werden mehr Daten angezeigt (z.B. Umsatz nach Produkt und Zeit). Lässt man Attribute vom \verb|group by| weg, werden die Daten mehr verdichtet (\emph{roll up}) d.h. es werden weniger Daten angezeigt (z.B. Umsatz nur noch nach Zeit).
+In SQL kann diese Gruppierung mit \texttt{group by} erstellt werden. Werden mehr Attribute in \texttt{group by} aufgenommen, werden die Daten weniger stark verdichtet (\emph{drill down}) d.h. es werden mehr Daten angezeigt (z.B. Umsatz nach Produkt und Zeit). Lässt man Attribute vom \texttt{group by} weg, werden die Daten mehr verdichtet (\emph{roll up}) d.h. es werden weniger Daten angezeigt (z.B. Umsatz nur noch nach Zeit).
 
 Beim sogenannten \emph{slicing} werden Scheiben aus dem Datenwürfel ausgeschnitten. Beim sogenannten \emph{dicing} werden mehre \emph{slicing}-Vorgänge gleichzeitig vorgenommen und somit wird ein kleinerer Würfel erzeugt.
 

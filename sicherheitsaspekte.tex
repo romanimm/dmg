@@ -2,7 +2,7 @@
 
 \subsection{Identifikation und Autorisierung in SQL umsetzen (create user)}
 
-Die Funktion \verb|password()| generiert einen Passwordhash. Dieser Hash kann dann verwendet werden um einen Benutzer zu erstellen. Listing \ref{lst:create-user} zeigt wie man einen Benutzer in MySQL erstellt.
+Die Funktion \texttt{password()} generiert einen Passwordhash. Dieser Hash kann dann verwendet werden um einen Benutzer zu erstellen. Listing \ref{lst:create-user} zeigt wie man einen Benutzer in MySQL erstellt.
 
 \begin{lstlisting}[caption={Benutzer erstellen},label=lst:create-user]
 -- Hash generieren
@@ -16,13 +16,13 @@ create user reader identified by password '*58DDF826FB6D08F2D78CE691773F242F10C1
 Es existieren zwei Sicherheitsstrategien:
 
 \begin{itemize}
-	\item \ac{DAC} \\
+	\item \textbf{\ac{DAC}} \\
 		  Definiert Regeln pro Objekt (z.B. Tabellen)
-	\item \ac{MAC} \\
+	\item \textbf{\ac{MAC}} \\
 		  Zusätzliche Regeln für Informationsfluss zwischen Objekt und User (mehr Sicherheit)
 \end{itemize}
 
-In SQL wird nur \ac{DAC} mit den Befehlen \verb|grant| und \verb|revoke| angeboten. Listing \ref{lst:grant-revoke} zeigt ein Beispiel für die Vergabe von Rechten auf eine Tabelle.
+In SQL wird nur \ac{DAC} mit den Befehlen \texttt{grant} und \texttt{revoke} angeboten. Listing \ref{lst:grant-revoke} zeigt ein Beispiel für die Vergabe von Rechten auf eine Tabelle.
 
 \begin{lstlisting}[caption={Rechte auf Tabelle},label=lst:grant-revoke]
 -- Leserechte auf Attribut MatrNr von Tabelle prüfen für Benutzer reader

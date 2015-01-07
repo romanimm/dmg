@@ -40,11 +40,9 @@ CREATE TABLE Bestellungen
 \subsubsection{Nach der Erstellung der Tabelle}
 \begin{lstlisting}[caption={Referentielle Integrität Update}]
 ALTER TABLE Bestellungen
-ADD CONSTRAINT kunde_kauft FOREIGN KEY (KundenID) REFRENCES Kunden
+ADD CONSTRAINT kunde_kauft FOREIGN KEY (KundenID) REFRENCES Kunden (KundenID)
 ON UPDATE CASCADE
 \end{lstlisting}
-
-Eigentlich ganz easy.
 
 \subsubsection{Folgen der Veränderung bei der referentiellen Integrität}
 Was passiert wenn ein Fremdschlüssel verändert wird oder gar gelöscht wird? Dies wird durch folgende Angaben gesteuert:
@@ -81,7 +79,7 @@ CREATE TABLE Studenten
 \end{lstlisting}
 
 \subsection{Den Begriff der Trigger erklären}
-Trigger sind Prozeduren, die zu vordefinierten Zeitpunkten auf der Datenbank ausgeführt werden, analog zu den Stored Procedures. Mit Triggern können ebenfalls Integritätsbedingungen forciert und überprüft werden.
+Trigger sind Prozeduren, die zu vordefinierten Zeitpunkten auf der Datenbank ausgeführt werden, analog zu den Stored Procedures. Mit Triggern können dynamische Integritätsbedingungen überprüft werden.
 
 Mögliche Aktionen, die ein Trigger auslösen:
 
@@ -107,4 +105,4 @@ FOR EACH ROW
 END;
 \end{lstlisting}
 
-Die diversen Optionen aus dem vorigen Kapitel können natürlich an den entsprechenden Stellen verändert werden. Dies sollte selbstverständlich sein.
+Die in Abschnitt \ref{sec:stored-procedure} vorgestellten Konstrukte können in einem Trigger auch angewendet werden.

@@ -7,7 +7,7 @@ SQL Abfragen können geschachtelt werden. Dabei werden 2 Unterarten unterschiede
 \begin{itemize}
   \item \textbf{Rückgabe besteht aus einem Tupel mit einem einzigen Wert} \\
   Das könnte z.B. sein, wenn man ein einfaches \texttt{SELECT COUNT(*) FROM Studenten} ausführt. \\
-  Kann dort eingefügt werden, wo ein skalarer Wert erwartet wird.
+  Kann dort eingefügt werden, wo ein skalarer Wert (nur ein Wert) erwartet wird.
   \item \textbf{Rückgabe besteht aus mehreren Tupeln} \\
   Dies ist ein normaler Select, z.B. \texttt{SELECT * FROM Studenten} \\
   Wird häufig in Kombination mit Mengenoperatoren eingesetzt (siehe Kapitel \ref{sec:mengen_operatoren}).
@@ -21,7 +21,7 @@ SELECT PersNr, Name,
 FROM Professoren;
 \end{lstlisting}
 
-Hier wird in der Unterabfrage das Attribut PersNr von der Oberabfrage verwendet. Dies ist möglichst zu vermeiden, da für jedes auszuwertende Tupel der Oberabfrage die Datenbank auch alle Unterabfragen auswerten muss. Dies könnte erhebliche Perfomanceeinbusse zur Folge haben. Oft kann man dieses Problem aber mit einem einfachen Join oder einer Aggregatsfunktion umgehen.
+Hier wird in der Unterabfrage das Attribut PersNr von der Oberabfrage verwendet. Dies ist möglichst zu vermeiden, da für jedes auszuwertende Tupel der Oberabfrage die Datenbank auch alle Unterabfragen auswerten muss. Dies könnte erhebliche Perfomanceeinbusse zur Folge haben. Oft kann man dieses Problem mit einem einfachen Join oder einer Aggregatsfunktion umgehen.
 
 \subsubsection{Temporäre Sichten}
 Mit dem Operator \texttt{WITH} kann sehr einfach eine temporäre Relation definiert werden, die wie eine normale Tabelle anschliessend abgefragt werden kann. Dies stellt eine lesbarere Alternative zu Verschachtelten Abfragen dar.
@@ -47,28 +47,24 @@ Fügt einfach 2 Abfrageergebnisse zusammen. Die Ergebnisse müssen übereinstimm
 \label{sec:in_operator}
 
 Mit dem \texttt{in} Operator wird einfach getestet ob ein Element Teil einer anderen Menge ist. Einfaches Beispiel:
+
 \begin{lstlisting}[caption={Beispiel in Operator},label=lst:in_bsp]
+-- einfache Abfrage
 SELECT Name FROM Professoren WHERE PersNr IN (SELECT gelesenVon FROM Vorlesungen);
-\end{lstlisting}
-
-Es kann auch eine konkrete Menge angegeben werden:
-
-\begin{lstlisting}[caption={Diskrete Menge IN}]
+-- konkrete Menge
 SELECT * FROM Studenten WHERE Semester IN (1,2,3,4);
 \end{lstlisting}
 
-Mit dem vorangestellten \texttt{NOT} kann das Gegenteil gezeigt, werden, also dass ein Element \textit{nicht} Teil dieser Menge ist.
+Mit dem vorangestellten \texttt{NOT} kann gezeigt werden dass ein Element nicht Teil dieser Menge ist.
 
 \subsection{Quantifizierte Anfragen (exists)}
 
-\texttt{exists} überprüft, ob eine Unterabfrage leer ist oder nicht. Wenn die Menge leer ist liefert \texttt{exists} \texttt{false} und sonst \texttt{true}.
+\texttt{exists} überprüft, ob eine Unterabfrage leer ist oder nicht. Wenn die Menge leer ist liefert \texttt{exists} \texttt{false} und sonst \texttt{true}. Diese Abfrage gibt alle Namen der Professoren zurück welche eine Vorlesung lesen:
 
 \begin{lstlisting}[caption={SQL Beispiel mit Exists},label=lst:bsp_exists]
 SELECT Name FROM Professoren
 WHERE EXISTS (SELECT * FROM Vorlesungen WHERE gelesenVon = Professoren.PersNr);
 \end{lstlisting}
-
-Diese Abfrage gibt alle Namen der Professoren zurück welche eine Vorlesung lesen.
 
 \subsection{Nullwerte (null)}
 
@@ -91,6 +87,7 @@ Diese Abfrage gibt alle Namen der Professoren zurück welche eine Vorlesung lese
 \end{itemize}
 
 \subsection{Vergleichsoperatoren (between, in, like, case when)}
+
 \subsubsection{between}
 Folgende Ausdrücke sind gleichwertig:
 
@@ -104,7 +101,8 @@ SELECT * FROM Studenten WHERE Semster BETWEEN 1 AND 4;
 Siehe Abschnitt \ref{sec:in_operator}.
 
 \subsubsection{like}
-Der \texttt{like}-Operator wird häufig in Verbindung mit Suchen von Text eingesetzt. Dabei können Platzhalter eingesetzt werden für unbekannte Teiltexte.
+Der \texttt{like}-Operator wird häufig in Verbindung mit Suchen von Text eingesetzt. Dabei können Platzhalter (Wildcards) eingesetzt werden für unbekannte Teiltexte.
+
 \begin{itemize}
   \item \textbf{\%} Beliebig viele Zeichen
   \item \textbf{\underline {{ }{ }}} Genau ein Zeichen
@@ -148,20 +146,21 @@ Bedeutet dasselbe. Ist ein sog. \texttt{Theta-Join} aus der relationalen Algebra
 
 \mygraphics{0.2\textwidth}{fig/innerjoin.png}{Inner Join}{Inner Join}
 
-Hier wird Tupel für Tupel verglichen. Wenn die zu vergleichenden Attribute in beiden Tabellen vorkommen, kommen sie in das Resultat. Gibt es keine Übereinstimmung, wird zur nächsten Zeile gewechselt.
+Hier wird Tupel für Tupel verglichen. Wenn die zu vergleichenden Attribute (Join-Prädikat) in beiden Tabellen vorkommen, kommen sie in das Resultat. Gibt es keine Übereinstimmung, wird zur nächsten Zeile gewechselt.
 
 \begin{lstlisting}[caption={JOIN ON Beispiel}]
-SELECT * FROM Kunden
-JOIN Produkte ON Produkte.KäuferID = Kunden.KundenID
+SELECT * FROM Produkte
+JOIN Kunden ON Produkte.KäuferID = Kunden.KundenID
 \end{lstlisting}
 
 \subsubsection{left outer join}
-Gleich wie der inner join, allerdings gelangen alle Tupel der linken Tabelle in das Resultat, es könnte sein, dass \texttt{null}-Werte auf der rechten Seite sind. \texttt{left outer join} ist dabei gleichbedeutend wie \texttt{left join}.
+Gleich wie der inner join, allerdings gelangen alle Tupel der linken Tabelle in das Resultat. Es könnte sein, dass \texttt{null}-Werte auf der rechten Seite sind. \texttt{left outer join} ist dabei gleichbedeutend wie \texttt{left join}.
 
 \mygraphics{0.2\textwidth}{fig/leftjoin.png}{Left Join}{Left Join}
 
 \begin{lstlisting}[caption={Left Join SQL}]
-SELECT * FROM Kunden LEFT OUTER JOIN Produkte;
+SELECT * FROM Produkte 
+LEFT OUTER JOIN Kunden ON Produkte.KäuferID = Kunden.KundenID;
 \end{lstlisting}
 
 Hier würden nun alle Produkte ausgegeben, und wenn sich zu den Produkten ein Käufer fände, würde dieser mit angegeben. Wenn kein Käufer da wäre, würde \texttt{null} in den entsprechenden Attributen stehen.
@@ -176,7 +175,7 @@ SELECT * FROM Kunden RIGHT OUTER JOIN Produkte;
 \end{lstlisting}
 
 \subsubsection{full join}
-Hier werden einfach der \texttt{left outer join} und der \texttt{right outer join} zusammengefasst, denn es werden alle Datensätze aus beiden Tabellen sicher ausgegeben.
+Hier werden der \texttt{left outer join} und der \texttt{right outer join} zusammengefasst, denn es werden alle Datensätze aus beiden Tabellen sicher ausgegeben.
 
 \mygraphics{0.2\textwidth}{fig/fulljoin.png}{Full Join}{Full Join}
 

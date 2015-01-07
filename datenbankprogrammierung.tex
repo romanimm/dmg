@@ -6,7 +6,7 @@
     \item \textbf{Relationale Vollständigkeit} \\
     Alle Ausdrücke der relationalen Algebra können umgesetzt werden
     \item \textbf{Turing-Vollständigkeit} \\
-    Alle Programme, die eine Turing Maschine ausführen kann, können umgesetzt werden, d.h. alle berechnbaren Funktionen können berechnet werden.
+    Alle Programme, die eine Turing Maschine ausführen kann, können umgesetzt werden, d.h. alle berechenbaren Funktionen können berechnet werden.
 \end{itemize}
 
 SQL ist nicht Turing-Komplett, da folgende Dinge nicht gemacht werden können:
@@ -27,11 +27,11 @@ Laut dem Buch sind moderne Datenbankserver zu wenig ausgelastet, deshalb wird ei
     \item \textbf{Bessere Sicherheitsanalyse} \\
         Schutz vor SQL Injections etc.
     \item \textbf{Optimierter Code} \\
-        SQL Abfragen können vom integrierten Anfrageprozessor optimiert werden, der gesamte Code kann in Assemblercode kompilliert werden und muss nicht erst interpretiert werden.
+        SQL Abfragen können vom integrierten Anfrageprozessor optimiert werden, der gesamte Code kann in Assemblercode kompiliert werden und muss nicht erst interpretiert werden.
     \item \textbf{Konziser Code} \\
         Weniger Zeilen Code benötigt.
     \item \textbf{Wiederverwendbarkeit} \\
-        Eine Funktion kann von diversen Clients verwendet werden und muss nicht jedesmal neu implementiert werden.
+        Eine Funktion kann von diversen Clients verwendet werden und muss nicht jedes mal neu implementiert werden.
     \item \textbf{Wartbarkeit} \\
         Änderungen müssen nur zentral an einer Stelle durchgeführt werden.
     \item \textbf{Performance} \\
@@ -56,6 +56,7 @@ Hinweis: Dazu steht im Buch nichts, zur Horizonterweiterung:
 Nochmals ein Hinweis: Warum ist Simon kein Fan von Stored Procedures? Haben sie ihm was getan? ;)
 
 \subsection{Eine Stored Procedure erstellen und in der Datenbank-Shell anwenden}
+\label{sec:stored-procedure}
 
 \begin{lstlisting}[caption={Grundgerüst Stored Procedure},label=lst:gerüst_storedprocedure]
 DROP PROCEDURE IF EXISTS test;
@@ -71,7 +72,7 @@ CALL test(100, 200);
 \end{lstlisting}
 
 \subsubsection{Delimiter}
-Der Delimiter bezeichnet das Ende einer Zeile. Standardmässig ist der Delimiter auf ein Semikolon \verb|;| eingestellt. Da die gesamte Prozedur aber als Solches übergeben werden soll, muss das Ende der Zeile temporär umgestellt werden, üblicherweise zu \verb|$$|. Am Schluss der Prozedur wird es wieder auf ein Semikolon zurückgestellt.
+Der Delimiter bezeichnet das Ende einer Zeile. Standardmässig ist der Delimiter auf ein Semikolon \texttt{;} eingestellt. Da die gesamte Prozedur aber als Solches übergeben werden soll, muss das Ende der Zeile temporär umgestellt werden, üblicherweise zu \texttt{\$\$}. Am Schluss der Prozedur wird es wieder auf ein Semikolon zurückgestellt.
 
 \subsubsection{Cursor}
 
@@ -171,19 +172,19 @@ END LOOP test_loop;
 SQL ist bereits standardisiert. Nun gilt es, den genauen technischen Zugriff ebenfalls zu kapseln. Dies geschieht über eine Abstraktionsschicht mit Hilfe von Treibern.
 
 \subsubsection{Treiber}
-Der Treiber implementiert die genaue technische Funktionalität des Datenbankzugriffs für eine spezifische Datenbank. Beispielsweise gibt es einen Treiber für den Zugriff auf einen MySQL Server und einen anderen Treiber für ein PostgreSQL Server.
+Der Treiber implementiert die genaue technische Funktionalität des Datenbankzugriffs für eine spezifische Datenbank. Beispielsweise gibt es einen Treiber für den Zugriff auf einen MySQL Server und einen anderen Treiber für ein PostgreSQL Server. Dem Anwenderprogramm ist es dadurch egal welche Datenbank verwendet wird.
 
 \subsubsection{DriverManager}
 Ist eine Java-Klasse, welche die Verbindung mit dem Datenbankserver herstellt. Sie benötigt gewisse Parameter wie URL, Benutzername und Passwort. Damit der \texttt{DriverManager} die Verbindung herstellen kann, muss zuerst ein Treiber geladen werden. Dies geschieht über die Anweisung \texttt{Class.forName(...)}.
 
 \subsubsection{Connection}
-Ist eine Javaklasse, in der die konkrete Verbindung gespeichert wird. Aus einem \verb|Connection|-Objekt kann man \verb|Statement|-Objekte erzeugen. Am Ende des Programms muss am \verb|Connection|-Objekt noch die Methode \verb|.close()| aufgerufen werden, um die Verbindung zu schliessen.
+Ist eine Java-Klasse, in der die konkrete Verbindung gespeichert wird. Aus einem \verb|Connection|-Objekt kann man \verb|Statement|-Objekte (\texttt{createStatement()}) erzeugen. Am Ende des Programms muss am \verb|Connection|-Objekt noch die Methode \verb|.close()| aufgerufen werden, um die Verbindung zu schliessen.
 
 \subsubsection{Statement}
-\verb|Statement|-Objekte beinhalten konkrete SQL-Befehle. Mit \verb|.executeQuery(...)| können die SQL-Befehle direkt ausgeführt werden. Als Resultat liefert das \verb|Statement|-Objekt ein \verb|ResultSet| zurück.
+\verb|Statement|-Objekte beinhalten konkrete SQL-Befehle. Mit \verb|executeQuery(...)| können die SQL-Befehle direkt ausgeführt werden. Als Resultat liefert das \verb|Statement|-Objekt ein \verb|ResultSet| zurück.
 
 \subsubsection{ResultSet}
-Das \texttt{ResultSet} ist im Prinzip ein Iterator. Der Zugriff auf einzelne Reihen des Resultats geschieht via dem Methodenaufruf \verb|resultset.next()|. Diese Methode liefert einen Boolean Wert zurück, welcher für das Erstellen von Schlaufen verwendet werden kann. Um Werte der Spalten eines Resultats auszulesen benötigt man folgenden Aufruf: \verb|resultset.getString(columnLabel)|. 
+Das \texttt{ResultSet} ist im Prinzip ein Iterator. Der Zugriff auf einzelne Reihen des Resultats geschieht via dem Methodenaufruf \verb|next()|. Diese Methode liefert einen Boolean Wert zurück, welcher für das Erstellen von Schlaufen verwendet werden kann. Um Werte der Spalten eines Resultats auszulesen benötigt man folgenden Aufruf: \verb|getString(columnLabel)|. 
 
 \subsection{Ein Java-Programm mit JDBC schreiben, welches von aussen auf die Datenbank zugreift}
 

@@ -65,6 +65,7 @@ Vorlesungen : \{[\underline{VorlNr: int}, Titel: string, SWS, int, \emph{gelesen
 Eine 1:1-Beziehung kann auf die gleiche Weise wie in Abschnitt \ref{sec:1-n-zusammenfassen} beschrieben zusammengefasst werden. Bei 1:N- und 1:1-Beziehungen sollten \texttt{NULL} vermieden werden. Als Beispiel sei genannt, dass z.B. jedes Land einen Präsidenten hat, und jeder Bürger kann nur Präsident von einem Land sein. Allerdings ist nicht jeder Bürger Präsident. Daher würde es keinen Sinn machen, bei der Tabelle \emph{Bürger} eine Spalte \emph{istPräsidentVon} einzufügen. Diese Spalte würde in die Tabelle \emph{Land} kommen.
 
 \subsubsection{Generalisierung}
+\label{sec:generalisierung}
 
 Eine Generalisierung (Vererbung) kann man darstellen indem der Primärschlüssel der Obertabelle als Fremdschlüssel in die Untertabelle eingetragen wird. Das nachfolgende Beispiel zeigt eine simple Umsetzung, wobei die Obertabelle \emph{Angestellte} zwei Untertabellen hat.
 
