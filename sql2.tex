@@ -86,6 +86,8 @@ WHERE EXISTS (SELECT * FROM Vorlesungen WHERE gelesenVon = Professoren.PersNr);
   \texttt{null} zählt bei Gruppierungen als eigenständiger Wert und ist als solcher aufgezählt.
 \end{itemize}
 
+\newpage
+
 \subsection{Vergleichsoperatoren (between, in, like, case when)}
 
 \subsubsection{between}
@@ -165,6 +167,8 @@ LEFT OUTER JOIN Kunden ON Produkte.KäuferID = Kunden.KundenID;
 
 Hier würden nun alle Produkte ausgegeben, und wenn sich zu den Produkten ein Käufer fände, würde dieser mit angegeben. Wenn kein Käufer da wäre, würde \texttt{null} in den entsprechenden Attributen stehen.
 
+\newpage
+
 \subsubsection{right outer join}
 Analog zum left outer join, der right outer join.
 
@@ -193,6 +197,8 @@ Um Zeilen zu verändern benötigt man das \texttt{update} Statement. Folgendes B
 \begin{lstlisting}[caption={update Beispiel}]
 UPDATE Studenten SET Semester = Semester + 1 WHERE MatrNr = 1337;
 \end{lstlisting}
+
+\newpage
 
 \subsubsection{delete}
 Zum Zeilen löschen.

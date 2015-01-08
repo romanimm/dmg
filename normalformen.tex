@@ -9,6 +9,8 @@ Normalformen sollen redundante Informationshaltung in den Datenbankschemas verme
 
 \texttt{A\#} verweist in dieser Tabelle auf die Abteilungsnummer, und die Bezeichnung auf die Abteilungsbezeichnung. Die Bezeichnung könnte ohne Informationsverlust gestrichen werden, da z.B. die Abteilungsnummer \textit{A6} sowieso immer die Finanzabteilung ist. Besser wäre es, diese Informationen auszulagern. Zudem macht es keinen Sinn, dieselbe Abteilungsbezeichnung mehrfach zu speichern, wenn eine simple Referenz darauf zeigen könnte.
 
+\newpage
+
 \subsubsection{Anomalien}
 Mit der besprochenen Redundanz treten folgende Anomalien auf:
 
@@ -40,14 +42,14 @@ Nun könnte man ja auch den Namen 'Huber' alleine aus der Mitarbeiternummer herl
 \subsubsection{Erste Normalform}
 
 \begin{center}
-    \framebox{\textbf{In einer Spalte dürfen keine Mengen, Aufzählungen oder Wiederholungsgruppen sein.}}
+    \textbf{In einer Spalte dürfen keine Mengen, Aufzählungen oder Wiederholungsgruppen sein.}
 \end{center}
 
 \subsubsection{Zweite Normalform}
 Erste Normalform und zusätzlich:
 
 \begin{center}
-    \framebox{\textbf{Jedes Nichtschlüsselmerkmal ist von jedem Schlüssel \textit{voll funktional abhängig}.}}
+    \textbf{Jedes Nichtschlüsselmerkmal ist von jedem Schlüssel \textit{voll funktional abhängig}.}
 \end{center}
 
 Deswegen wird die Tabelle aus der Abbildung \ref{fig:nf12} in der ersten Normalform aufgeteilt in eine Mitarbeitertabelle und eine Zugehörigkeitstabelle.
@@ -85,7 +87,7 @@ Die mittlere Grafik in der Abbildung \ref{fig:nf3} zeigt dies nochmals grafisch.
 Zweite Normalform und zusätzlich:
 
 \begin{center}
-    \framebox{\textbf{Kein Nichtschlüsselmerkmal ist von irgendeinem Schlüssel transitiv abhängig}}
+    \textbf{Kein Nichtschlüsselmerkmal ist von irgendeinem Schlüssel transitiv abhängig}
 \end{center}
 
 \subsection{Weitere Normalformen aufzählen:}
@@ -104,7 +106,7 @@ Wir haben ein Konstrukt wie in Abbildung \ref{fig:nf4} gezeigt. Das heisst dass 
 Dritte Normalform, BCNF und zusätzlich:
 
 \begin{center}
-    \framebox{\textbf{Keine zwei echte und voneinander verschiedene mehrwertige Abhängigkeiten in derselben Tabelle.}}
+    \textbf{Keine zwei echte und voneinander verschiedene mehrwertige Abhängigkeiten in derselben Tabelle.}
 \end{center}
 
 \subsubsection{Verbundabhängigkeit / fünfte Normalform}
