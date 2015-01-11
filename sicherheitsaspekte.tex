@@ -37,7 +37,7 @@ grant select (MatrNr)
 -- 'cascade' entzieht auch die vom Benutzer an andere Benutzer vergebenen Rechte
 revoke select (MatrNr)
 	on prüfen
-	to reader
+	from reader
 	cascade;
 \end{lstlisting}
 
