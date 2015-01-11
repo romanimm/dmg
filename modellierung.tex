@@ -46,7 +46,8 @@ Eine disjunkte Spezialisierung kann mit \emph{Fahrzeugen} erklärt werden. Von \
 
 \subsubsection{Vollständige Spezialisierung}
 
-Bei der vollständigen Spezialisierung ist beispielsweise die Oberentität ein \emph{Spieler}. Die beiden Unterentitäten sind Sportarten: \emph{Rugby} und \emph{Fussball}. Ein \emph{Spieler} kann beide Sportarten ausüben, deshalb handelt es sich um eine vollständige Spezialisierung. 
+Ein Beispiel: Der Basis-Entitätstyp ist \emph{Tier}. Eine Spezialisierung davon ist \emph{Hund} ein andere \emph{Katze}. Die vollständige Spezialisierung besagt, dass jedes \emph{Tier} mind. ein \emph{Hund} oder eine \emph{Katze} ist. Mit anderen Worten, es gibt kein Eintrag in der Tabelle \emph{Tier} wo nicht von \emph{Hund} oder \emph{Katze} referenziert wird. Es ist auch möglich bei der vollständigen Spezialisierung, dass das Objekt sogleich \emph{Hund} und \emph{Katze} ist, dann wäre es einfach keine disjunkte Spezialisierung.
+Ein anderes Beispiel wäre: Basis-Entitätstyp \emph{Person}. Eine Spezialisierung davon ist \emph{Mitarbeiter} eine andere \emph{Kunde}. Alle Mitarbeiter und Kunden können nun erfasst werden. Das System ist so gebaut, dass nun Lieferanten einfach nur in \emph{Person} eingetragen werden. Es gibt keine konkrete Spezialisierung. Hier wäre die vollständige Spezialisierung nicht gegeben.
 
 \subsubsection{Aggregation}
 
