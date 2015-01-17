@@ -14,7 +14,15 @@ Die N:M-Beziehungen benötigen im relationalen Umfeld immer eine Zwischentabelle
 \subsubsection{Vererbung}
 
 Vererbung (Generalisierung) kann in relationalen Datenbanken nur schlecht abgebildet werden (Abschnitt \ref{sec:generalisierung}). In OO-DBs kann man Vererbung direkt modellieren.
-Vererbungen können in relationalen Datenbanken auf 2 Arten abgelegt werden:
+Vererbungen können in relationalen Datenbanken auf 3 Arten abgelegt werden:
+\begin{itemize}
+  \item \textbf{Tabelle pro konkreter Klasse} \\
+  Dabei wird für jede Ober- und Unterklasse eine eigene Tabelle angelegt mit jeweils allen Attributen. Dies hat den Nachteil, dass man bei einer Änderung des Attributs alle Tabellen ändern muss, aber perfomancetechnisch sehr effizient. Neue konkrete Klassen sind einfach erstellbar.
+  \item \textbf{Tabelle pro Klasse} \\
+  Für jede Unterklasse wird eine Tabelle angelegt mit einer Referenz auf die entsprechende Oberklasse. Nur neue Attribute werden in der Tabelle aufgenommen. Dies hat den Nachteil, dass man viele Tabellen joinen muss, bis man zum gewünschten Oberattribut kommt. Allerdings ist es leicht erweiterbar und polymorphe Abfragen können ebenfalls gut durchgeführt werden.
+  \item \textbf{Alles in eine Tabelle schmeissen} \\
+  Hier nimmt man alle Attribute von Unter- und Oberklassen und fügt sie zusammen in eine riesige Tabelle. Daher benötigt man noch ein Flag, welches anzeigt von welchem Typ der Eintrag ist. Das hat den Nachteil dass man Speicherplatz verschwendet, die Wartung wird schwierig und unübersichtlich sowie die Validierung schwieriger (z.B. Überprüfung dass dieses Attribut bei der Klasse nie \emph{null} ist.
+\end{itemize}
 
 \subsection{Die Vorteile von objektrelationalen Mappern erklären: Basis RDBMS (Investitionsschutz), Verwendung in OOP}
 
