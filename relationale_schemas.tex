@@ -68,16 +68,16 @@ Eine 1:1-Beziehung kann auf die gleiche Weise wie in Abschnitt \ref{sec:1-n-zusa
 
 \subsubsection{Generalisierung}
 \label{sec:generalisierung}
+Vererbungen, resp. Generalisierungen können in relationalen Datenbanken auf 3 Arten abgelegt werden:
+\begin{itemize}
+  \item \textbf{Tabelle pro konkreter Klasse} \\
+  Dabei wird für jede Ober- und Unterklasse eine eigene Tabelle angelegt mit jeweils allen Attributen. Dies hat den Nachteil, dass man bei einer Änderung des Attributs alle Tabellen ändern muss, aber perfomancetechnisch sehr effizient. Neue konkrete Klassen sind einfach erstellbar.
+  \item \textbf{Tabelle pro Klasse} \\
+  Für jede Unterklasse wird eine Tabelle angelegt mit einer Referenz auf die entsprechende Oberklasse. Nur neue Attribute werden in der Tabelle aufgenommen. Dies hat den Nachteil, dass man viele Tabellen joinen muss, bis man zum gewünschten Oberattribut kommt. Allerdings ist es leicht erweiterbar und polymorphe Abfragen können ebenfalls gut durchgeführt werden.
+  \item \textbf{Alles in eine Tabelle schmeissen} \\
+  Hier nimmt man alle Attribute von Unter- und Oberklassen und fügt sie zusammen in eine riesige Tabelle. Daher benötigt man noch ein Flag, welches anzeigt von welchem Typ der Eintrag ist. Das hat den Nachteil dass man Speicherplatz verschwendet, die Wartung wird schwierig und unübersichtlich sowie die Validierung schwieriger (z.B. Überprüfung dass dieses Attribut bei der Klasse nie \emph{null} ist.
+\end{itemize}
 
-Eine Generalisierung (Vererbung) kann man darstellen indem der Primärschlüssel der Obertabelle als Fremdschlüssel in die Untertabelle eingetragen wird. Das nachfolgende Beispiel zeigt eine simple Umsetzung, wobei die Obertabelle \emph{Angestellte} zwei Untertabellen hat.
-
-\begin{center}
-Angestellte : \{[\underline{PersNr}, Name]\} \\
-Professoren : \{[\underline{PersNr}, Rang, Raum]\} \\
-Vorlesungen : \{[\underline{PersNr},Fachgebiet]\}
-\end{center}
-
-Das relationale Modell bietet sonst keine Möglichkeit die Vererbung darzustellen.
 
 \subsubsection{Schwache Entitäten}
 
