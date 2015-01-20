@@ -182,17 +182,17 @@ Der Treiber implementiert die genaue technische Funktionalität des Datenbankzug
 Ist eine Java-Klasse, welche die Verbindung mit dem Datenbankserver herstellt. Sie benötigt gewisse Parameter wie URL, Benutzername und Passwort. Damit der \texttt{DriverManager} die Verbindung herstellen kann, muss zuerst ein Treiber geladen werden. Dies geschieht über die Anweisung \texttt{Class.forName(...)}.
 
 \subsubsection{Connection}
-Ist eine Java-Klasse, in der die konkrete Verbindung gespeichert wird. Aus einem \verb|Connection|-Objekt kann man \verb|Statement|-Objekte (\texttt{createStatement()}) erzeugen. Am Ende des Programms muss am \verb|Connection|-Objekt noch die Methode \verb|.close()| aufgerufen werden, um die Verbindung zu schliessen.
+Ist eine Java-Klasse, in der die konkrete Verbindung gespeichert wird. Aus einem \texttt{Connection}-Objekt kann man \texttt{Statement}-Objekte (\texttt{createStatement()}) erzeugen. Am Ende des Programms muss am \texttt{Connection}-Objekt noch die Methode \texttt{.close()} aufgerufen werden, um die Verbindung zu schliessen.
 
 \subsubsection{Statement}
-\verb|Statement|-Objekte beinhalten konkrete SQL-Befehle. Mit \verb|executeQuery(...)| können die SQL-Befehle direkt ausgeführt werden. Als Resultat liefert das \verb|Statement|-Objekt ein \verb|ResultSet| zurück.
+\texttt{Statement}-Objekte beinhalten konkrete SQL-Befehle. Mit \texttt{executeQuery(...)} können die SQL-Befehle direkt ausgeführt werden. Als Resultat liefert das \texttt{Statement}-Objekt ein \texttt{ResultSet} zurück. Die Methode \texttt{execute(...)} führt ein SQL-Befehl aus, liefert jedoch kein \texttt{ResultSet} zurück.
 
 \subsubsection{ResultSet}
-Das \texttt{ResultSet} ist im Prinzip ein Iterator. Der Zugriff auf einzelne Reihen des Resultats geschieht via dem Methodenaufruf \verb|next()|. Diese Methode liefert einen Boolean Wert zurück, welcher für das Erstellen von Schlaufen verwendet werden kann. Um Werte der Spalten eines Resultats auszulesen benötigt man folgenden Aufruf: \verb|getString(columnLabel)|. 
+Das \texttt{ResultSet} ist im Prinzip ein Iterator. Der Zugriff auf einzelne Reihen des Resultats geschieht via dem Methodenaufruf \texttt{next()}. Diese Methode liefert einen Boolean Wert zurück, welcher für das Erstellen von Schlaufen verwendet werden kann. Um Werte der Spalten eines Resultats auszulesen benötigt man folgenden Aufruf: \texttt{getString(columnLabel)}. 
 
 \subsection{Ein Java-Programm mit JDBC schreiben, welches von aussen auf die Datenbank zugreift}
 
-\begin{lstlisting}[caption={JDBC Beispielprogramm},label=lst:jdbc_sample]
+\begin{lstlisting}[language=Java,keywordstyle=\color{keywordcolor},caption={JDBC Beispielprogramm},label=lst:jdbc_sample]
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;

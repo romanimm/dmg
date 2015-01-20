@@ -25,7 +25,7 @@ In der OOP verhalten sich die Daten einer Datenbank wie normale Objekte. Eine Mi
 
 \subsection{Daten mit ORM (JPA) anfragen (JPQL) und in Java verwenden}
 
-JPA ist die Middleware zwischen relationalen Datenbanken und der objektorientierten Java Welt. Sie besteht aus folgenden Komponenten:
+\ac{JPA} ist die Middleware zwischen relationalen Datenbanken und der objektorientierten Java Welt. Sie besteht aus folgenden Komponenten:
 
 \begin{itemize}
   \item \textbf{EntityManager} \\
@@ -62,7 +62,7 @@ List list = q.getResultList();
 
 \texttt{persist} speichert ein neues Objekt in der Datenbank und \texttt{merge} aktualisiert ein vorhandenes Objekt. Beide Aktionen müssen innerhalb einer Transaktion ausgeführt werden. Listing \ref{lst:jpa-erstellen} zeigt wie ein Objekt in JPA erstellt und aktualisiert wird.
 
-\begin{lstlisting}[language=Java,keywordstyle=\color{keywordcolor},caption={Daten updaten mit JPA},label=lst:jpa-erstellen]
+\begin{lstlisting}[language=Java,keywordstyle=\color{keywordcolor},caption={Daten schreiben mit JPA},label=lst:jpa-erstellen]
 // Transaktion beginnen
 EntityTransaction ta = em.getTransaction();
 ta.begin();

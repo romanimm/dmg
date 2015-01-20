@@ -8,7 +8,7 @@ Die Funktion \texttt{password()} generiert einen Passwordhash. Dieser Hash kann 
 -- Hash generieren
 select password('abcdefg_12'); -- *58DDF826FB6D08F2D78CE691773F242F10C161A1
 -- Benutzer erstellen
-create user reader identified by password '*58DDF826FB6D08F2D78CE691773F242F10C161A1';
+create user reader IDENTIFIED BY PASSWORD '*58DDF826FB6D08F2D78CE691773F242F10C161A1';
 \end{lstlisting}
 
 \subsection{Zugriffskontrolle auf Tabellen in SQL umsetzen (grant, revoke)}
@@ -29,15 +29,15 @@ In SQL wird nur \ac{DAC} mit den Befehlen \texttt{grant} und \texttt{revoke} ang
 -- 'with grant option' ermöglicht dem Benutzer das Recht an weitere Benutzer zu vergeben
 grant select (MatrNr)
 	on prüfen
-	to reader
-	with grant option;
+	TO reader
+	WITH GRANT OPTION;
 -- Weitere Rechte: delete, insert, update, references (Fremdschlüssel erstellen)
 
 -- Rechte entziehen
 -- 'cascade' entzieht auch die vom Benutzer an andere Benutzer vergebenen Rechte
 revoke select (MatrNr)
 	on prüfen
-	from reader
+	FROM reader
 	cascade;
 \end{lstlisting}
 
