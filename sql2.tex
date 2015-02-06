@@ -3,16 +3,13 @@
 \subsection{Geschachtelte Anfragen (inline views)}
 
 SQL Abfragen können geschachtelt werden. Dabei werden 2 Unterarten unterschieden:
-
-\begin{itemize}
-  \item \textbf{Rückgabe besteht aus einem Tupel mit einem einzigen Wert} \\
+\begin{description}
+  \item[Rückgabe besteht aus einem Tupel mit einem einzigen Wert] \hfill \\
   Das könnte z.B. sein, wenn man ein einfaches \texttt{SELECT COUNT(*) FROM Studenten} ausführt. \\
   Kann dort eingefügt werden, wo ein skalarer Wert (nur ein Wert) erwartet wird.
-  \item \textbf{Rückgabe besteht aus mehreren Tupeln} \\
-  Dies ist ein normaler Select, z.B. \texttt{SELECT * FROM Studenten} \\
-  Wird häufig in Kombination mit Mengenoperatoren eingesetzt (siehe Kapitel \ref{sec:mengen_operatoren}).
-\end{itemize}
-
+  \item[Rückgabe besteht aus mehreren Tupeln] \hfill \\
+  Dies ist ein normaler Select, z.B. \texttt{SELECT * FROM Studenten}. Wird häufig in Kombination mit Mengenoperatoren eingesetzt (siehe Kapitel \ref{sec:mengen_operatoren}).
+\end{description}
 Nun kann es sein, dass in der Unterabfrage ein Attribut der Oberabfrage referenziert wird. Als Beispiel:
 
 \begin{lstlisting}[caption={Korrelierte Unterabfrage},label=lst:unterabfrage_korreliert]

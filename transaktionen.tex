@@ -57,29 +57,21 @@ Wenn im Fehlerfall die Transaktion noch nicht beendet wurde (im Log also noch ke
 \subsection{Transaktionen mit verschiedenen Isolation Levels auf einem Datenbankserver ausführen}
 
 Bei Transaktionen können verschiedene Anomalien (Fehlverhalten) auftreten. Die verschiedenen Isolation Levels versuchen diese zu verhindern. Es existieren folgende Anomalien:
-
-\begin{itemize}
-	\item \textbf{Dirty Reads} \\
+\begin{description}
+	\item[Dirty Reads] \hfill \\
 	Die Transaktion liest Daten, die von einer anderen Transaktion noch gar nicht \emph{committed} wurden.
-	\item \textbf{Non-repeatable Reads} \\
+	\item[Non-repeatable Reads] \hfill \\
 	Die Transaktion liest zweimal dieselbe Row, erhält aber beim zweiten Mal ein anderes Resultat. Das passiert, weil die Lese-Locks gleich nach dem Lesen wieder weggegeben werden.
-	\item \textbf{Phantom Reads} \\
+	\item[Phantom Reads] \hfill \\
 	Wenn eine Kollektion von Zeilen zweimal abgerufen wird und nicht beidesmal dieselbe Kollektion zurückkommt. Dies passiert wenn keine \emph{range-locks} über eine Tabelle gehalten werden. Wird nur von der höchsten Stufe beachtet.
-\end{itemize}
-
-\noindent
+\end{description}
 Mit folgenden Isolation Levels werdend diese Anomalien verhindert:
-
-\begin{itemize}
-  \item \textbf{Read Uncommitted} \\
-  Das ist die niedrigste Stufe der Transaktionssicherheit.  Alle Anomalien können auftreten.
-  \item \textbf{Read committed} \\
-  Keine \emph{Dirty Reads} mehr. 
-  \item \textbf{Repeatable reads} \\
-  Keine \emph{Non-repeatable Reads} mehr. 
-  \item \textbf{Serializable} \\
-  Das ist die höchste Stufe der Isolation. Keine Anomalien treten innerhalb der Transaktionen auf.
-\end{itemize}
+\begin{description}
+  \item[Read uncommitted:] Das ist die niedrigste Stufe der Transaktionssicherheit.  Alle Anomalien können auftreten.
+  \item[Read committed:] Keine \emph{Dirty Reads} mehr. 
+  \item[Repeatable reads:] Keine \emph{Non-repeatable Reads} mehr. 
+  \item[Serializable:] Das ist die höchste Stufe der Isolation. Keine Anomalien treten innerhalb der Transaktionen auf.
+\end{description}
 
 \subsubsection{Transaktionen in SQL}
 

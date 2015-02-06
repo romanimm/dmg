@@ -27,18 +27,13 @@ In der OOP verhalten sich die Daten einer Datenbank wie normale Objekte. Eine Mi
 
 \ac{JPA} ist die Middleware zwischen relationalen Datenbanken und der objektorientierten Java Welt. Sie besteht aus folgenden Komponenten:
 
-\begin{itemize}
-  \item \textbf{EntityManager} \\
-  Objekt für den Zugriff auf persistente Objekte. Bietet Funktionen wie suchen, speichern oder Transaktionen an.
-  \item \textbf{Entity} \\
-  Ein einfaches Java Objekt, welches in einer Tabelle in der Datenbank gespeichert wird.
-  \item \textbf{Annotations} \\
-  Diese @-Symbole und Texte, die den Bezug von Instanzvariablen zu Spalten und von Klassen zu Tabellen herstellen.
-  \item \textbf{JPQL}  \\
-  Ähnlich wie SQL. Erlaubt es, Objekte von der Datenbank abzufragen.
-  \item \textbf{persistence.xml} \\
-  Herzstück von JPA - hier werden die Verbindungsdaten gespeichert.
-\end{itemize}
+\begin{description}
+  \item[EntityManager:] Objekt für den Zugriff auf persistente Objekte. Bietet Funktionen wie suchen, speichern oder Transaktionen an.
+  \item[Entity:] Ein einfaches Java Objekt, welches in einer Tabelle in der Datenbank gespeichert wird.
+  \item[Annotations:] Diese @-Symbole und Texte, die den Bezug von Instanzvariablen zu Spalten und von Klassen zu Tabellen herstellen.
+  \item[JPQL:] Ähnlich wie SQL. Erlaubt es, Objekte von der Datenbank abzufragen.
+  \item[persistence.xml:] Herzstück von JPA - hier werden die Verbindungsdaten gespeichert.
+\end{description}
 
 \newpage
 
